@@ -1,27 +1,253 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body::-webkit-scrollbar {
+  height: 0px; /* Height of horizontal scrollbar */
+  width: 0px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.bubble {
+  --c: #0AA0EA;
+}
+
+.bubble span {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background-color: var(--c);
+  transform: translateY(150%);
+  border-radius: 50%;
+  left: calc((var(--n) - 1) * 25%);
+  transition: 0.5s;
+  transition-delay: calc((var(--n) - 1) * 0.1s);
+  z-index: -1;
+}
+
+.bubble:hover {
+  color: #091926;
+}
+
+.bubble:hover span {
+  transform: translateY(0) scale(2);
+}
+
+.bubble span:nth-child(1) {
+  --n: 1;
+}
+
+.bubble span:nth-child(2) {
+  --n: 2;
+}
+
+.bubble span:nth-child(3) {
+  --n: 3;
+}
+
+.bubble span:nth-child(4) {
+  --n: 4;
+}
+
+
+.bubble-blue {
+  --c: #091926;
+
+}
+
+.bubble-blue span {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background-color: var(--c);
+  transform: translateY(150%);
+  border-radius: 50%;
+  left: calc((var(--n) - 1) * 25%);
+  transition: 0.5s;
+  transition-delay: calc((var(--n) - 1) * 0.1s);
+  z-index: -1;
+}
+
+.bubble-blue:hover {
+  color: #0AA0EA;
+  outline: 1px solid #0AA0EA;
+}
+
+.bubble-blue:hover span {
+  transform: translateY(0) scale(2);
+}
+
+.bubble-blue span:nth-child(1) {
+  --n: 1;
+}
+
+.bubble-blue span:nth-child(2) {
+  --n: 2;
+}
+
+.bubble-blue span:nth-child(3) {
+  --n: 3;
+}
+
+.bubble-blue span:nth-child(4) {
+  --n: 4;
+}
+
+
+.bubble-white {
+  --c: #ffffff;
+
+}
+
+.bubble-white span {
+  position: absolute;
+  width: 25%;
+  height: 100%;
+  background-color: var(--c);
+  transform: translateY(150%);
+  border-radius: 50%;
+  left: calc((var(--n) - 1) * 25%);
+  transition: 0.5s;
+  transition-delay: calc((var(--n) - 1) * 0.1s);
+  z-index: -1;
+}
+
+.bubble-white:hover {
+  color: #000000;
+
+}
+
+.bubble-white:hover span {
+  transform: translateY(0) scale(2);
+}
+
+.bubble-white span:nth-child(1) {
+  --n: 1;
+}
+
+.bubble-white span:nth-child(2) {
+  --n: 2;
+}
+
+.bubble-white span:nth-child(3) {
+  --n: 3;
+}
+
+.bubble-white span:nth-child(4) {
+  --n: 4;
+}
+@keyframes grow  {
+  from {
+    transform:translateY(0) scale(1);
+  }
+  to {
+    transform:translateY(10px)scale(1.05);
+  }
+}
+.move {
+  animation: grow  1.5s forwards infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes fadeIn {
+  from {
+    transform:translateY(100%) ;
+  }
+  to {
+    transform:translateY(0px) ;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeOut {
+  from {
+    transform:translateY(0%) ;
+  }
+  to {
+    transform:translateY(100%);
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.pop {
+  transform:translateY(100%) ;
+  animation: fadeIn 0.5s forwards;
+}
+img.emoji {
+  width: 110px;
+  height: 110px;
+  vertical-align: middle;
+}
+.view.view::-webkit-scrollbar {
+  width: 10px;
+}
+
+.epr_c90x4z {
+  display: none !important;
+}
+ .epr-emoji-category-label {
+  font-size: 12px !important;
+  font-weight: 400px;
+ }
+ .epr_3z09g4{
+  height: 20px !important;
+ }
+ .epr_r48c1o{
+  color: #AEBAC1 !important;
+ }
+ .parent:hover .child{
+display: block;
+ }
+ .child{
+  display: none;
+ }
+ .epr_-99lr9q{
+  background-color: #00000000 !important;
+ }
+ .epr_-ucs3ns {
+  font-weight: 400 !important;
+ }
+ .epr_-6dchwm {
+  position: static !important;
+ }
+ .epr-main {
+  border-radius: 0 !important;
+  border: none !important;
+ }
+ .epr_-8623pq{
+  background-color: #27516B !important;
+ }
+ .epr_-2zpaw9{
+  border: none !important;
+  font-size: 13px !important;
+ }
+ .epr_-8ygbw8{
+  padding: 4px 8px !important;
+ }
+ .epr_x558go:focus{
+  outline: 1px solid #0AA0EA !important;
+ }
+/* Handle */
+.view::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.277); 
+
+}
+
+/* Handle on hover */
+.view::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.69); 
+}
+/* Apply the fadee-out animation */
+.pop-hidden {
+
+  animation: fadeOut 0.5s forwards;
+}
+
+.semi{
+  font-family: var(--font-mulish-semi);
+}
+.bold {
+  font-family: var(--font-mulish-bold);
+}
+
+.norm {
+  font-family: var(--font-mulish);
 }
