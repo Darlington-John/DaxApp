@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import { UserProvider } from "./context/auth-context";
 import { Provider } from 'react-redux';
 import store from '~/store';
+import { DashboardProvider } from "./context/dashboard-context";
 
 
 const mulish = localFont({
@@ -43,9 +44,11 @@ export default function RootLayout({
       >
 <Provider store={store}>
         <UserProvider>
+          <DashboardProvider>
         <Header/>
         {children}
         <Footer/>
+        </DashboardProvider>
         </UserProvider>
         </Provider>
       </body>

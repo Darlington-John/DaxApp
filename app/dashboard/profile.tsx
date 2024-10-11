@@ -236,7 +236,7 @@ const [username, setUsername] = useState('');
        <div className={`w-[400px]  rounded-2xl   pop  duration-300 ease-in-out xs:w-full  bg-darkBlue ring ring-blue  ring-1   ${isEditNameVisible ? '' : 'pop-hidden'}`} ref={editNameRef} >
        <div  className="flex flex-col p-4 gap-3">
         <div className="flex flex-col gap-1">
-        <label htmlFor="username" className="text-sm font-semibold text-dimWhite">Name:</label>
+        <h1 className="text-sm font-semibold text-dimWhite">Name:</h1>
           <input
       value={username}
       onChange={(e) => setUsername(e.target.value)}

@@ -5,12 +5,13 @@ import me from './../../../public/images/me.svg'
 import { useUser } from "~/app/context/auth-context";
 import { useSelector } from "react-redux";
 import ChatHeader from "./view-header";
-import ChatInput from "./view-input";
+import down from './../../../public/icons/down.svg'
+import { useEffect,  useRef,  useState } from "react";
 
-import { useEffect, useState } from "react";
-
-import emojiData from 'emoji-datasource-apple'; 
 import ChatBox from "./chat-box";
+import { transformContentToImages } from "~/utils/transfrom-emojis-to-img";
+import { useScrollToBottom } from "~/utils/scroll-position";
+import ChatInput from "./view-input/view-input";
 
 const View = () => {
 const {loading, user}= useUser();
@@ -47,17 +48,21 @@ const {loading, user}= useUser();
     };
     const [isDeleting, setIsDeleting] = useState(false);
     const [isMeDeleting, setIsMeDeleting] = useState(false);
-    const handleDeleteMessage = async (messageId: string) => {
+    const handleDeleteMessageBase = async (
+      messageId: string, 
+      apiEndpoint: string, 
+      setLoadingState: React.Dispatch<React.SetStateAction<boolean>>
+    ) => {
       const userId = user.phone;
       const activeChat = user.contacts.find(
         (contact: any) => contact._id === activeContactId
       );
       const receiverNumber = activeChat.phone;
-  
-      setIsDeleting(true);
-  
+    
+      setLoadingState(true);
+    
       try {
-        const res = await fetch('/api/delete-message', {
+        const res = await fetch(apiEndpoint, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +73,7 @@ const {loading, user}= useUser();
             messageId,
           }),
         });
-  
+    
         const data = await res.json();
         if (res.ok) {
           console.log('Message deleted:', data);
@@ -80,80 +85,96 @@ const {loading, user}= useUser();
         console.error('Error deleting message:', error);
         alert('Error deleting message.');
       } finally {
-        setIsDeleting(false);
+        setLoadingState(false);
       }
     };
-    const handleDeleteMessageForMe = async (messageId: string) => {
-      const userId = user.phone;
-      const activeChat = user.contacts.find(
-        (contact: any) => contact._id === activeContactId
-      );
-      const receiverNumber = activeChat.phone;
-  
-      setIsMeDeleting(true);
-  
+    const handleDeleteMessage = (messageId: string) => {
+      handleDeleteMessageBase(messageId, '/api/delete-message', setIsDeleting);
+    };
+    const handleDeleteMedia = (messageId: string) => {
+      handleDeleteMessageBase(messageId, '/api/delete-media', setIsDeleting);
+    };
+    const handleDeleteMessageForMe = (messageId: string) => {
+      handleDeleteMessageBase(messageId, '/api/delete-message-for-me', setIsMeDeleting);
+    };
+    const handleDownloadImage = async (imageUrl: any) => {
       try {
-        const res = await fetch('/api/delete-message-for-me', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId,
-            receiverNumber,
-            messageId,
-          }),
-        });
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
   
-        const data = await res.json();
-        if (res.ok) {
-          console.log('Message deleted:', data);
-          // Optionally update the local UI here after deletion
-        } else {
-          alert('Failed to delete message: ' + data.error);
-        }
+        link.href = url;
+        link.setAttribute('download', 'daxlightning.jpg'); // Custom file name or default
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+  
+        // Release the blob URL after the download
+        URL.revokeObjectURL(url);
       } catch (error) {
-        console.error('Error deleting message:', error);
-        alert('Error deleting message.');
-      } finally {
-        setIsMeDeleting(false);
+        console.error('Error downloading the image:', error);
+      }
+    };
+    const handleDownloadVideo = async (videoUrl: string) => {
+      try {
+        const response = await fetch(videoUrl);
+        const blob = await response.blob(); // Get the video as a blob
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+    
+        link.href = url;
+        link.setAttribute('download', 'daxlightning.mp4'); // Set the video file name and extension
+        document.body.appendChild(link);
+        link.click(); // Trigger the download
+        document.body.removeChild(link); // Clean up the DOM
+    
+        // Release the blob URL after the download
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Error downloading the video:', error);
       }
     };
     useEffect(() => {
-      if (activeContactId) {
-        markMessagesAsRead();
-      }
-    }, [activeContactId]);
-
+      let intervalId: any
   
-    const getEmojiImageUrl = (emojiUnicode: any) => {
-      const formattedUnicode = emojiUnicode.split('-').join('-').toLowerCase();
-      const emoji = emojiData.find(e => e.unified.toLowerCase() === formattedUnicode); 
-    
-      if (emoji) {
-        return `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji.image}`; 
+      if (activeContactId) {
+          const checkNewMessages = async () => {
+              await markMessagesAsRead(); 
+          };
+
+          intervalId = setInterval(checkNewMessages, 1000);
       }
-      return ''; 
+  
+      return () => {
+          if (intervalId) {
+              clearInterval(intervalId);
+          }
+      };
+  }, [activeContactId]);
+    const chatBoxProps = {
+      transformContentToImages,
+      handleDeleteMessage,
+      handleDeleteMessageForMe,
+      isDeleting,
+      isMeDeleting,
+      handleDeleteMedia,
+      handleDownloadImage,
+      handleDownloadVideo
     };
-    const isEmojiOnly = (content: string) => {
-      //@ts-ignore
-      const emojiRegex = /^[\p{Emoji}\s]+$/u;
-      return emojiRegex.test(content);
-    };
-    
-    const transformContentToImages = (content: string) => {
-      const isOnlyEmojis = isEmojiOnly(content);
-      const emojiClass = isOnlyEmojis ? 'w-10 h-10' : 'w-5 h-5'; 
-      const transformedContent = Array.from(content).map((char: string) => {
-        const emojiImageUrl = getEmojiImageUrl(char.codePointAt(0)?.toString(16));
-        if (emojiImageUrl) {
-          return `<img src="${emojiImageUrl}" alt="${char}" class="${emojiClass}"/>`; 
-        }
-        return char === ' ' ? '&nbsp;' : char;
-      }).join('');
-    
-      return transformedContent;
-    };
+    const { scrollRef, scrollToBottom, show } = useScrollToBottom(100);
+    const activeChat = user?.contacts.find((chat: any) => chat._id === activeContactId);
+    const prevMessageLength = useRef(activeChat?.messages.length);
+    useEffect(() => {
+      if (scrollRef.current && activeChat?.messages.length > prevMessageLength.current) {
+        scrollRef.current.scrollTo({
+          top: scrollRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+      prevMessageLength.current = activeChat?.messages.length;
+    }, [activeChat?.messages.length]);
+
     
     return (
     loading? null: ( <>     {user?.contacts.some((chat: any) => activeContactId === chat._id) ? (
@@ -161,19 +182,20 @@ const {loading, user}= useUser();
           activeContactId === chat._id && (
             <div key={chat._id} className="w-full relative h-full bg-[#050e15] flex flex-col justify-between"   style={{
                 backgroundImage: `url(/images/doodle.svg)`}}>
-                  
 <ChatHeader chat={chat}/>
 
-                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view">
-                          
+                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative" ref={scrollRef}>
+                          {show &&(  <button onClick={scrollToBottom} className="bg-deepBlue p-3 rounded-full self-center  fixed  bottom-32  right-10"><Image src={down} className="w-3" alt=''/></button>)}
+                
 {chat?.messages?.map((data: any, index: any)=>(
-<ChatBox data={data} {...data} key={index +1} transformContentToImages={transformContentToImages}
-handleDeleteMessage={handleDeleteMessage }
-handleDeleteMessageForMe={handleDeleteMessageForMe }
+<ChatBox data={data}
+ {...data} 
+ key={index +1}
+{...chatBoxProps}
 />
 ))}
                              </div>
-                       <ChatInput/>
+                <ChatInput/>
             </div>
           )
         )

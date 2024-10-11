@@ -5,19 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useUser } from '~/app/context/auth-context';
 import { setActiveButton } from '~/store/buttonSlice';
+import loading from './../../public/images/load.gif'
 const NewChat = () => {
     const {user} = useUser();
     const activeButtonIndex = useSelector((state: any) => state.buttons.activeButtonIndex);
     const [phone, setPhone] = useState('');
     const [message, setMessage] = useState('');
-    const [userDetails, setUserDetails] = useState<any>(null);
+    const [adding, setAdding]= useState(false);
   const currentUserId = user?._id
+
+
     const handleAddContact = async () => {
       if (!phone) {
         setMessage('Please enter a phone number.');
         return;
       }
-  
+      if (adding) return;
+  setAdding(true);
       try {
         const res = await fetch('/api/add-contact', {
           method: 'POST',
@@ -34,10 +38,10 @@ const NewChat = () => {
   
         if (res.status === 200) {
           setMessage(data.message);
-          setUserDetails(data.user);
+          setAdding(false);
         } else {
           setMessage(data.message + '') ;
-          setUserDetails(null);
+          setAdding(false);
         }
       } catch (error) {
         setMessage('Something went wrong. Please try again.');
@@ -75,7 +79,8 @@ const NewChat = () => {
         value={phone}
 
       />
-      <button onClick={handleAddContact} className='bg-blue  text-darkBlue  text-sm font-semibold py-2   rounded-md  hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out px-4'>Add</button>
+
+      <button onClick={handleAddContact} className={`  text-darkBlue  text-sm font-semibold py-2   rounded-md  hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out px-4 ${adding?'bg-deepBlue':'bg-blue'}`} disabled={adding}>   {adding ? <Image src={loading} alt="" className="w-5   cursor-pointer mx-auto"/>:'Add' }</button>
     </div>
     {message ==='User not found.'&&(<div className='flex flex-col text-dimWhite text-sm items-center w-full'>
       <h1 className='text-sm  bold '>No results</h1>

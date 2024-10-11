@@ -1,4 +1,4 @@
-import { format, isToday, isYesterday, isThisWeek, differenceInDays } from 'date-fns';
+import { format, isToday, isYesterday, isThisWeek } from 'date-fns';
 
 export function transformDate(dateString: string): string {
   const date = new Date(dateString);
@@ -28,4 +28,13 @@ export function formatTime(dateString: string): string {
   // Format the time to display in "h:mm a" (e.g., "5:55 AM")
   return format(date, 'h:mm a');
 }
+
+export const isMoreThanOneDay = (date: string | Date) => {
+  const oneDayInMs = 24 * 60 * 60 * 1000; // One day in milliseconds
+  const now = new Date();
+  const updatedDate = new Date(date);
+
+  return now.getTime() - updatedDate.getTime() > oneDayInMs;
+};
+
 
