@@ -28,10 +28,27 @@ export async function GET(req: NextRequest) {
     }
 
     
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
+const user = await User.findById(decoded.userId)
+  .populate({
+    path: 'contacts.user',
+    select: 'username email profile phone',
+  })
+  .populate({
+    path: 'contacts.messages.sender',
+    select: 'username email profile phone',
+  })
+  .populate({
+    path: 'contacts.messages.receiver',
+    select: 'username email profile phone',
+  })
+  .populate({
+    path: 'archive.user',
+    select: 'username email profile phone',
+  });// Populate archive user details
+  
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
 
     return NextResponse.json({ user });
   } catch (error) {

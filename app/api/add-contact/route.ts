@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 import connectMongo from '~/lib/mongodb';
 import User from '~/models/User';
@@ -12,49 +13,47 @@ export async function POST(req: Request) {
   }
 
   try {
-    // Find the user to add by phone number
-    const userToAdd = await User.findOne({ phone });
+    
+    const userToAdd:any = await User.findOne({ phone });
 
     if (!userToAdd) {
       return NextResponse.json({ message: 'User not found.' }, { status: 404 });
     }
 
-    // Find the current user by ID
-    const currentUser = await User.findById(currentUserId);
+    
+    const currentUser:any = await User.findById(currentUserId);
 
     if (!currentUser) {
       return NextResponse.json({ message: 'Current user not found.' }, { status: 404 });
     }
 
-    // Check if the user to add is already in the current user's contacts
-    const isAlreadyInContacts = currentUser.contacts.some(contact => contact.phone === phone);
+    
+    const isAlreadyInContacts = currentUser.contacts.some((contact: any) => 
+      contact.user.toString() === userToAdd._id.toString()
+    );
 
     if (isAlreadyInContacts) {
       return NextResponse.json({ message: 'User is already in contacts.' }, { status: 400 });
     }
 
-    // Add user to current user's contacts
+    
     currentUser.contacts.push({
-      username: userToAdd.username,
-      email: userToAdd.email,
-      phone: userToAdd.phone,
-      profile: userToAdd.profile || '',
-      messages: []
+      user: userToAdd._id as mongoose.Types.ObjectId,  
+      messages: []          
+    
     });
-
-    // Save changes to the current user
+    
     await currentUser.save();
 
-    // Now add the current user to the userToAdd's contacts as well
-    const isCurrentUserInTheirContacts = userToAdd.contacts.some(contact => contact.phone === currentUser.phone);
+    
+    const isCurrentUserInTheirContacts = userToAdd.contacts.some((contact: any) => 
+      contact.user.toString() === currentUser._id.toString() 
+    );
 
     if (!isCurrentUserInTheirContacts) {
       userToAdd.contacts.push({
-        username: currentUser.username,
-        email: currentUser.email,
-        phone: currentUser.phone,
-        profile: currentUser.profile || '',
-        messages: []
+        user: currentUser._id as mongoose.Types.ObjectId,  
+        messages: []            
       });
 
       await userToAdd.save();
@@ -63,6 +62,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Users added to each other\'s contacts successfully.' }, { status: 200 });
 
   } catch (error) {
+    console.error('Error adding contact:', error);
     return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
   }
 }

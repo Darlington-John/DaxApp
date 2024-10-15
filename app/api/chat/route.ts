@@ -1,15 +1,15 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import User from '~/models/User';
 import connectMongo from '~/lib/mongodb';
+import mongoose from 'mongoose';
 
 export async function POST(req: NextRequest) {
   try {
     await connectMongo();
 
-    const { userId, receiverNumber, message, reply } = await req.json();
+    const { userId, receiverNumber, message, reply} = await req.json();
 
-    
+    // Find the sender and receiver based on phone numbers
     const sender = await User.findOne({ phone: userId });
     const receiver = await User.findOne({ phone: receiverNumber });
 
@@ -17,32 +17,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    
-    const senderContactIndex = sender.contacts.findIndex(
-      (contact: any) => contact.phone === receiverNumber
+    // Find the sender's contact for the receiver
+    let senderContact = sender.contacts.find(
+      (contact: any) => String(contact.user) === String(receiver._id)
     );
-    const receiverContactIndex = receiver.contacts.findIndex(
-      (contact: any) => contact.phone === userId
+    // If the contact doesn't exist, add it
+    if (!senderContact) {
+      sender.contacts.push({ user: receiver._id as mongoose.Types.ObjectId, messages: [] });
+      senderContact = sender.contacts[sender.contacts.length - 1];  // Reference the newly added contact
+    }
+    // Find the receiver's contact for the sender
+    let receiverContact = receiver.contacts.find(
+      (contact: any) => String(contact.user) === String(sender._id)
     );
 
-    
-    receiver.contacts[receiverContactIndex].messages.push({
-      content: message,
-      sender: userId, 
-      receiver: receiverNumber, 
-      read: false, 
-      replyingTo: reply,
-    });
+    if (!receiverContact) {
+      receiver.contacts.push({ user: sender._id as mongoose.Types.ObjectId, messages: [] });
+      receiverContact = receiver.contacts[receiver.contacts.length - 1];
+    }
 
-    sender.contacts[senderContactIndex].messages.push({
+    // Create the message object
+    const newMessage:any = {
+      sender: sender._id,
+      receiver: receiver._id,
       content: message,
-      sender: userId, 
-      receiver: receiverNumber, 
-      read: false, 
-      replyingTo: reply,
-    });
+      replyingTo: reply || null,
 
-    
+      read: false,  // Message is unread by default
+    };
+
+    // Add the message to both sender's and receiver's contact messages
+    senderContact.messages.push(newMessage);
+    receiverContact.messages.push(newMessage);
+
+    // Save both users
     await sender.save();
     await receiver.save();
 

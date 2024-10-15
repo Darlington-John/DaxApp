@@ -9,8 +9,8 @@ export async function DELETE(req: NextRequest) {
     const { userId, receiverNumber, messageId } = await req.json();
 
     
-    const sender = await User.findOne({ phone: userId });
-    const receiver = await User.findOne({ phone: receiverNumber });
+    const sender:any = await User.findOne({ phone: userId });
+    const receiver:any = await User.findOne({ phone: receiverNumber });
 
     if (!sender || !receiver) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -18,27 +18,21 @@ export async function DELETE(req: NextRequest) {
 
     
     const senderContactIndex = sender.contacts.findIndex(
-      (contact: any) => contact.phone === receiverNumber
+      (contact: any) => contact.user.toString() === receiver._id.toString()
     );
 
     const receiverContactIndex = receiver.contacts.findIndex(
-      (contact: any) => contact.phone === userId
+      (contact: any) => contact.user.toString() === sender._id.toString()
     );
 
     if (senderContactIndex === -1 || receiverContactIndex === -1) {
       return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
     }
-
-    
-    const senderMessages = sender.contacts[senderContactIndex].messages;
-    sender.contacts[senderContactIndex].messages = senderMessages.filter(
-      (msg: any) => msg.content.toString() !== messageId
+    sender.contacts[senderContactIndex].messages = sender.contacts[senderContactIndex].messages.filter(
+      (msg: any) => msg.content.toString() !== messageId 
     );
-
-    
-    const receiverMessages = receiver.contacts[receiverContactIndex].messages;
-    receiver.contacts[receiverContactIndex].messages = receiverMessages.filter(
-      (msg: any) => msg.content.toString() !== messageId
+    receiver.contacts[receiverContactIndex].messages = receiver.contacts[receiverContactIndex].messages.filter(
+      (msg: any) => msg.content.toString() !== messageId 
     );
 
     

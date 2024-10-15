@@ -117,7 +117,7 @@ const {audioUrl}=props;
       <div className={`flex items-center   ${props.chat? 'gap-2':'gap-4'}`}>
         <div className={`flex items-center gap-3  rounded-full  ${props.chat? ' px-2 py-1 ':'bg-[#d1d7db42]  px-3 py-2'}`}>
         {props.speaker &&(
-          <div className="h-[60px] w-[60px]    relative">
+          <div className="h-[50px] w-[50px]    relative">
 <img src={props?.profile ? props.profile: '/icons/default-user.svg' } className="w-full h-full object-cover rounded-full" alt=''/>
 <Image src={micShadow} alt='' className="absolute bottom-0 right-0  w-4.5 "/>
           </div>

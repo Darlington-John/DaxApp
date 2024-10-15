@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 import ChatHeader from "./view-header";
 import down from './../../../public/icons/down.svg'
 import { useEffect,  useRef,  useState } from "react";
-
-import ChatBox from "./chat-box";
 import { transformContentToImages } from "~/utils/transfrom-emojis-to-img";
 import { useScrollToBottom } from "~/utils/scroll-position";
 import ChatInput from "./view-input/view-input";
+import ChatBox from "./chat-box/chat-box";
 
 const View = () => {
 const {loading, user}= useUser();
@@ -22,7 +21,7 @@ const {loading, user}= useUser();
       const activeChat = user?.contacts.find((chat: any) => activeContactId === chat._id);
       if (!activeChat) return;
     
-      const senderPhone = activeChat.phone;
+      const senderPhone = activeChat.user.phone;
     
       try {
         const res = await fetch('/api/mark-read', {
@@ -57,7 +56,7 @@ const {loading, user}= useUser();
       const activeChat = user.contacts.find(
         (contact: any) => contact._id === activeContactId
       );
-      const receiverNumber = activeChat.phone;
+      const receiverNumber = activeChat.user.phone;
     
       setLoadingState(true);
     
@@ -180,11 +179,12 @@ const {loading, user}= useUser();
     loading? null: ( <>     {user?.contacts.some((chat: any) => activeContactId === chat._id) ? (
         user?.contacts.map((chat: any) =>
           activeContactId === chat._id && (
-            <div key={chat._id} className="w-full relative h-full bg-[#050e15] flex flex-col justify-between"   style={{
+            <div key={chat._id} className="w-full relative h-full bg-[#050e15] flex flex-col justify-between sm:overflow-hidden sm:h-screen"   style={{
                 backgroundImage: `url(/images/doodle.svg)`}}>
-<ChatHeader chat={chat}/>
 
-                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative" ref={scrollRef}>
+<ChatHeader chat={chat.user}/>
+
+                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative lg:px-10  lg:gap-3" ref={scrollRef}>
                           {show &&(  <button onClick={scrollToBottom} className="bg-deepBlue p-3 rounded-full self-center  fixed  bottom-32  right-10"><Image src={down} className="w-3" alt=''/></button>)}
                 
 {chat?.messages?.map((data: any, index: any)=>(
@@ -201,7 +201,7 @@ const {loading, user}= useUser();
         )
       ) : (
 <div className="w-full h-full   py-3 bg-[#1F2937] flex items-center justify-center ">
-            <div className="flex flex-col gap-4 items-center">
+            <div className="flex flex-col gap-4 items-center md:w-full">
         <Image src={intro} alt="" className="lg:w-60"/>
         <div  className="flex gap-1  items-center">
         <Image src={me} alt="" className="w-6 lg:w-4"/>

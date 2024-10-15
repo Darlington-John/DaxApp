@@ -251,7 +251,10 @@ display: block;
 .norm {
   font-family: var(--font-mulish);
 }
-
+/* .message-box img{
+vertical-align: middle;
+display: inline;
+} */
 
 input[type="range"] {
   font-size: 1.5rem;

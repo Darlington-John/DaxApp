@@ -18,13 +18,11 @@ export async function POST(req: NextRequest) {
     const receiverNumber = formData.get('receiverNumber') as string;
     const message = formData.get('message') as string;
     const reply = formData.get('reply') as string;
-    const senderUsername = formData.get('senderUsername') as string; 
-    const senderProfile = formData.get('senderProfile') as string; 
-    const receiverUsername = formData.get('receiverUsername') as string; 
-    const receiverProfile = formData.get('receiverProfile') as string; 
     const audio = formData.get('audio') as Blob | null;  
-    const sender = await User.findOne({ phone: userId });
-    const receiver = await User.findOne({ phone: receiverNumber });
+
+
+    const sender:any = await User.findOne({ phone: userId });
+    const receiver:any = await User.findOne({ phone: receiverNumber });
 
     if (!sender || !receiver) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -61,22 +59,22 @@ export async function POST(req: NextRequest) {
     }
 
     
-    const senderContactIndex = sender.contacts.findIndex(
-      (contact: any) => contact.phone === receiverNumber
+  const senderContactIndex = sender.contacts.findIndex(
+      (contact: any) => contact.user.toString() === receiver._id.toString()
     );
     const receiverContactIndex = receiver.contacts.findIndex(
-      (contact: any) => contact.phone === userId
+      (contact: any) => contact.user.toString() === sender._id.toString()
     );
+
+    if (senderContactIndex === -1 || receiverContactIndex === -1) {
+      return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
+    }
 
     
     const newMessage = {
       content: message,
-      sender: userId,
-      senderUsername: senderUsername,
-      senderProfile: senderProfile,
-      receiverUsername: receiverUsername,
-      receiverProfile: receiverProfile,
-      receiver: receiverNumber,
+      sender: sender._id,
+      receiver: receiver._id,
       read: false,
       replyingTo: reply,
       audio: audioUrl || '', 

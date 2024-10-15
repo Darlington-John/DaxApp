@@ -22,8 +22,8 @@ const getEmojiImageUrl = (emojiUnicode: any) => {
     
     // Use the passed-in custom classes, or fallback to default
     const emojiClass = isOnlyEmojis 
-      ? customEmojiClasses?.onlyEmojiClass || 'w-10 h-10' 
-      : customEmojiClasses?.emojiClass || 'w-5 h-5'; 
+      ? customEmojiClasses?.onlyEmojiClass || 'w-10 h-10  align-middle  inline' 
+      : customEmojiClasses?.emojiClass || 'w-5  h-5 align-middle  inline'; 
   
     const transformedContent = Array.from(content).map((char: string) => {
       const emojiImageUrl = getEmojiImageUrl(char.codePointAt(0)?.toString(16));

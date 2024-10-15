@@ -19,12 +19,10 @@ export async function POST(req: NextRequest) {
     const message = formData.get('message') as string;
     const reply = formData.get('reply') as string;
     const file = formData.get('file'); 
-    const senderUsername = formData.get('senderUsername') as string; 
-    const senderProfile = formData.get('senderProfile') as string; 
-    const receiverUsername = formData.get('receiverUsername') as string; 
-    const receiverProfile = formData.get('receiverProfile') as string; 
-    const sender = await User.findOne({ phone: userId });
-    const receiver = await User.findOne({ phone: receiverNumber });
+
+
+    const sender:any = await User.findOne({ phone: userId });
+    const receiver:any = await User.findOne({ phone: receiverNumber });
 
     if (!sender || !receiver) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -53,39 +51,35 @@ export async function POST(req: NextRequest) {
     });
 
     
-
-    // Find sender and receiver contacts
     const senderContactIndex = sender.contacts.findIndex(
-      (contact: any) => contact.phone === receiverNumber
+      (contact: any) => contact.user.toString() === receiver._id.toString()
     );
     const receiverContactIndex = receiver.contacts.findIndex(
-      (contact: any) => contact.phone === userId
+      (contact: any) => contact.user.toString() === sender._id.toString()
     );
 
-    // Create a new message object
+    if (senderContactIndex === -1 || receiverContactIndex === -1) {
+      return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
+    }
     const newMessage = {
       content: message,
-      sender: userId,
-      senderUsername: senderUsername,
-      senderProfile: senderProfile,
-      receiverUsername: receiverUsername,
-      receiverProfile: receiverProfile,
-      receiver: receiverNumber,
+      sender: sender._id, 
+      receiver: receiver._id, 
       read: false,
       replyingTo: reply,
-      image: fileType === 'image' ? uploadResult.secure_url : '', 
+      image: fileType === 'image' ? uploadResult.secure_url : '',
       video: fileType === 'video' ? uploadResult.secure_url : ''
     };
 
-    // Add the message to sender and receiver contacts
+    
     receiver.contacts[receiverContactIndex].messages.push(newMessage);
     sender.contacts[senderContactIndex].messages.push(newMessage);
 
-    // Save changes to the database
+    
     await sender.save();
     await receiver.save();
 
-    // Respond with success
+    
     return NextResponse.json({ message: 'Message sent successfully', url: uploadResult.secure_url });
   } catch (error) {
     console.error('Error:', error);

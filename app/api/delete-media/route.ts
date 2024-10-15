@@ -8,39 +8,44 @@ export async function DELETE(req: NextRequest) {
 
     const { userId, receiverNumber, messageId } = await req.json();
 
-    // Find sender and receiver
-    const sender = await User.findOne({ phone: userId });
-    const receiver = await User.findOne({ phone: receiverNumber });
+    
+    const sender:any = await User.findOne({ phone: userId });
+    const receiver:any = await User.findOne({ phone: receiverNumber });
 
     if (!sender || !receiver) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     const senderContactIndex = sender.contacts.findIndex(
-      (contact: any) => contact.phone === receiverNumber
+      (contact: any) => contact.user.toString() === receiver._id.toString()
     );
+
     const receiverContactIndex = receiver.contacts.findIndex(
-      (contact: any) => contact.phone === userId
+      (contact: any) => contact.user.toString() === sender._id.toString()
     );
 
     if (senderContactIndex === -1 || receiverContactIndex === -1) {
       return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
     }
 
-    // Filter messages for sender (either image or video matches messageId)
+    
     const senderMessages = sender.contacts[senderContactIndex].messages;
     sender.contacts[senderContactIndex].messages = senderMessages.filter(
-      (msg: any) => (!msg.image || msg.image.toString() !== messageId) &&
-                    (!msg.video || msg.video.toString() !== messageId) &&
-                    (!msg.audio || msg.audio.toString() !== messageId) // Add audio check here
+      (msg: any) => 
+        (!msg._id || msg._id.toString() !== messageId) && 
+        (!msg.image || msg.image.toString() !== messageId) &&
+        (!msg.video || msg.video.toString() !== messageId) &&
+        (!msg.audio || msg.audio.toString() !== messageId)
     );
     
-    // Filter messages for receiver (either image, video, or audio matches messageId)
+    
     const receiverMessages = receiver.contacts[receiverContactIndex].messages;
     receiver.contacts[receiverContactIndex].messages = receiverMessages.filter(
-      (msg: any) => (!msg.image || msg.image.toString() !== messageId) &&
-                    (!msg.video || msg.video.toString() !== messageId) &&
-                    (!msg.audio || msg.audio.toString() !== messageId) // Add audio check here
+      (msg: any) => 
+        (!msg._id || msg._id.toString() !== messageId) && 
+        (!msg.image || msg.image.toString() !== messageId) &&
+        (!msg.video || msg.video.toString() !== messageId) &&
+        (!msg.audio || msg.audio.toString() !== messageId)
     );
     await sender.save();
     await receiver.save();

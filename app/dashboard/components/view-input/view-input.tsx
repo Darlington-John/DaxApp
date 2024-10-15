@@ -46,12 +46,9 @@ const ChatInput = () => {
     const handleSendMessage = async () => {
       if (!inputValue.trim()) return;
 setIsLoading(true);
-setReplyMessage('');
-setImage('');
-setVideo('');
-setAudio('')
+
       const userId = user.phone;
- const receiverNumber = activeChat.phone;
+ const receiverNumber = activeChat.user.phone;
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
@@ -70,6 +67,10 @@ setAudio('')
         if (res.ok) {
           console.log('Message sent:', data);
           setInputValue(''); 
+          setReplyMessage('');
+setImage('');
+setVideo('');
+setAudio('');
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -115,11 +116,7 @@ const handleSendMedia = async () => {
 setReplyMessage('');
 setImage('');
   const userId = user.phone;
-  const receiverNumber = activeChat.phone;
-  const  senderUsername=user.username;
-  const senderProfile=user.profile;
-  const receiverUsername=activeChat.username;
-  const receiverProfile=activeChat.profile;
+  const receiverNumber = activeChat.user.phone;
   const formData = new FormData();
   formData.append('file', file);
 
@@ -127,10 +124,6 @@ setImage('');
   formData.append('receiverNumber', receiverNumber);
   formData.append('message', inputValue);
   formData.append('reply', replyMessage);
-  formData.append('senderUsername', senderUsername);
-  formData.append('senderProfile', senderProfile);
-  formData.append('receiverUsername', receiverUsername);
-  formData.append('receiverProfile', receiverProfile);
   try {
     const res = await fetch('/api/send-media', {
       method: 'POST',
@@ -158,22 +151,14 @@ const handleSendAudio = async () => {
   if (!audioData) return;
 setUploadingRec(true);
   const userId = user.phone;
-  const receiverNumber = activeChat.phone;
-  const  senderUsername=user.username;
-  const senderProfile=user.profile;
-  const receiverUsername=activeChat.username;
-  const receiverProfile=activeChat.profile;
+  const receiverNumber = activeChat.user.phone;
   const formData = new FormData();
 
   formData.append('userId', userId);
   formData.append('receiverNumber', receiverNumber);
   formData.append('message', inputValue);
   formData.append('reply', replyMessage);
-  formData.append('senderUsername', senderUsername);
-  formData.append('senderProfile', senderProfile);
-  formData.append('receiverUsername', receiverUsername);
   formData.append('audio', audioData); 
-  formData.append('receiverProfile', receiverProfile);
   try {
     const res = await fetch('/api/send-audio', {
       method: 'POST',
@@ -221,15 +206,16 @@ const emojisProps = {
   <ReplyMessages  {...replyProps}/>
                  <input type="file" onChange={handleFileChange}    ref={fileInputRef} className='hidden'  accept="image/*,video/*"/>
                  
-{recordVisible?<AudioRecorder {...recordProps}/>: (<div  className={`w-full p-4 bg-deepBlue flex gap-4 items-center  relative z-20 ${upload && 'hidden'}`}>
-         <Image src={emoji} alt="" className="w-7 cursor-pointer" onClick={toggleEmojisPopup}/>
+{recordVisible?<AudioRecorder {...recordProps}/>: (<div  className={`w-full p-4 bg-deepBlue flex gap-4 items-center  relative z-20 lg:p-2 lg:gap-2  ${upload && 'hidden'}`}>
+         <Image src={emoji} alt="" className="w-7 cursor-pointer lg:w-5 " onClick={toggleEmojisPopup}/>
          <div className="shrink-0 relative">
-         <Image src={plus} alt="" className="w-7 cursor-pointer" onClick={toggleAttachPopup}/>
+
+         <Image src={plus} alt="" className="w-7 cursor-pointer lg:w-6" onClick={toggleAttachPopup}/>
          {attach && (
-          <div className={`flex flex-col bg-deepBlue   absolute  w-[220px] rounded-md overflow-hidden z-[200] duration-300 ease  p-2 -top-[80px]  ${isAttach ? 'opacity-100' :  ' opacity-0'}   `} ref={attachRef}>
+          <div className={`flex flex-col bg-deepBlue   absolute  w-[220px] rounded-md overflow-hidden z-[200] duration-300 ease  p-2 -top-[80px] lg:-top-[60px] lg:w-[150px]  lg:p-1  ${isAttach ? 'opacity-100' :  ' opacity-0'}   `} ref={attachRef}>
 <button className="flex gap-3 items-center  p-2  hover:bg-dimBlue   duration-150  rounded-md" onClick={handleClick}>
   <Image src={img} className="w-4" alt=""/>
-  <h1 className="text-sm text-white ">Photos & Videos</h1>
+  <h1 className="text-sm text-white  lg:text-xs">Photos & Videos</h1>
 </button>
           </div>
          )}
@@ -237,15 +223,15 @@ const emojisProps = {
 <textarea
 type="text"
 placeholder="Type a message"
-className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  '
+className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  max-h-[200px] sm:max-h-[80px]  '
 value={inputValue}
 onChange={handleChange}
 ref={textareaRef}
-style={{ overflow: 'hidden', height: '40px',  }}
+style={{ overflow: 'hidden', height: '40px' }}
 //@ts-ignore
 onKeyDown={handleKeyDown}
 autoFocus/>
-{isLoading ? <Image src={loading} alt="" className="w-7   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7   cursor-pointer" onClick={startRecording}/> : <Image src={send} alt="" className="w-7  cursor-pointer" onClick={handleSendMessage}/>}</> }
+{isLoading ? <Image src={loading} alt="" className="w-7 lg:w-5   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7 lg:w-5   cursor-pointer" onClick={startRecording}/> : <Image src={send} alt="" className="w-7 lg:w-5  cursor-pointer" onClick={handleSendMessage}/>}</> }
 
  </div>)}
                     
