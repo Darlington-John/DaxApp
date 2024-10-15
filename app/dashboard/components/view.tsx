@@ -184,7 +184,7 @@ const {loading, user}= useUser();
 
 <ChatHeader chat={chat.user}/>
 
-                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative lg:px-10  lg:gap-3" ref={scrollRef}>
+                             <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative lg:px-10  lg:gap-3 sm:px-4" ref={scrollRef}>
                           {show &&(  <button onClick={scrollToBottom} className="bg-deepBlue p-3 rounded-full self-center  fixed  bottom-32  right-10"><Image src={down} className="w-3" alt=''/></button>)}
                 
 {chat?.messages?.map((data: any, index: any)=>(

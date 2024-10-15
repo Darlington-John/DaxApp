@@ -337,3 +337,13 @@ input[type="range"]:disabled::-webkit-slider-thumb {
   cursor: not-allowed;
 }
 
+
+
+@media  screen and (max-width: 640px) {
+  .view::-webkit-scrollbar-thumb {
+    background: rgba(190, 1, 1, 0); 
+  }
+  .view::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.69); 
+  }
+}

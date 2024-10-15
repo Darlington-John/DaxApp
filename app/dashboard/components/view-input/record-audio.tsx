@@ -29,7 +29,7 @@ useEffect(() => {
     <div className="flex gap-3">
       <div className="flex items-center gap-3">
     <Image src={bin} alt='' className='w-4 cursor-pointer' onClick={hideRecording}/>
-    <h3 className="text-lg text-silver">{formatDuration(recordingDuration)}s</h3>
+    <h3 className="text-lg text-silver sm:text-sm">{formatDuration(recordingDuration)}s</h3>
     </div>
     {isRecording && (
       <div className='flex items-center gap-[1px] opacity-80'>
@@ -122,14 +122,14 @@ const {audioUrl}=props;
 <Image src={micShadow} alt='' className="absolute bottom-0 right-0  w-4.5 "/>
           </div>
           )}
-        <Image src={isPlaying?pauseAudio: play} alt='' className={` cursor-pointer ${props.chat? 'w-3':'w-4'}`} onClick={handlePlayPause} />
+        <Image src={isPlaying?pauseAudio: play} alt='' className={` cursor-pointer ${props.chat? 'w-3':'w-4 sm:w-3'}`} onClick={handlePlayPause} />
         <div className='flex items-center gap-[1px] opacity-80'>
           {imageArray.map((_,index)=>(
-            <Image src={isPlaying ?recordGif: recordStop } alt='' className={`cursor-pointer  ${props.chat? 'w-8':'w-10'}`}  key={index +1}/>
+            <Image src={isPlaying ?recordGif: recordStop } alt='' className={`cursor-pointer  ${props.chat? 'w-8':'w-10 sm:w-5'}`}  key={index +1}/>
           ))}
       </div>
       </div>
-      {!props.chat &&(<div className="flex  items-center gap-2">
+      {!props.chat &&(<div className="flex  items-center gap-2 sm:hidden">
       <Image src={speaker} alt='' className='w-5 cursor-pointer' onClick={handlePlayPause} />
         <input
           type="range"

@@ -13,6 +13,7 @@ import { useDashboard } from "~/app/context/dashboard-context";
 import { CustomAudioPlayer } from "../view-input/record-audio";
 import More from "./more-popup";
 import ReplyTo from "./replying-to";
+import { useScreenSize } from "~/utils/useScreenSize";
 
 const ChatBox = (props: any) => {
   const { user } = useUser();
@@ -88,11 +89,15 @@ const ChatBox = (props: any) => {
   const customClasses = { emojiClass: 'w-4  h-4', onlyEmojiClass: 'w-5  h-5 ' };
   const moreProps = { more, positionClass, isMore, user, moreRef, action, props };
   const replyToProps = { props, customClasses };
+  
+  const isScreenLarge = useScreenSize(640); 
+
   return (
-    <div className={`flex     items-center px-2 text-sm text-dimWhite relative   pt-2.5  pb-[6px] gap-1  max-w-[60%]  flex-wrap h-auto   parent border-none  outline-none w-auto lg:max-w-[80%]    ${medium}    ${props.sender.phone === user.phone ? 'self-end bg-[#004b64] rounded-l-md rounded-b-md' : 'self-start bg-[#202C33] rounded-b-md rounded-r-md'}`} ref={popupRef} >
-      <button className='   absolute right-1 top-1 bg-transparent  backdrop-blur-md p-1  rounded child ' onClick={toggleMorePopup}>
+    <div className={`flex     items-center px-2 text-sm text-dimWhite relative   pt-2.5  pb-[6px] gap-1  max-w-[60%]  flex-wrap h-auto   parent border-none  outline-none w-auto lg:max-w-[80%]  sm:max-w-[90%]  ${medium}    ${props.sender.phone === user.phone ? 'self-end bg-[#004b64] rounded-l-md rounded-b-md' : 'self-start bg-[#202C33] rounded-b-md rounded-r-md'}`} ref={popupRef}  {...(!isScreenLarge &&{onClick: toggleMorePopup})}>
+{isScreenLarge &&(<button className='   absolute right-1 top-1 bg-transparent  backdrop-blur-md p-1  rounded child ' onClick={toggleMorePopup}>
         <Image src={down} alt="" className="w-3.5" />
-      </button>
+      </button>) }
+      
       <More {...moreProps} />
       <ReplyTo {...replyToProps} />
       {props.image && (
@@ -113,7 +118,7 @@ const ChatBox = (props: any) => {
           <CustomAudioPlayer audioUrl={props.audio} chat speaker={true} profile={props?.sender.profile} />
         </div>
       )}
-      <h1 className="leading-[19px] flex flex-wrap text-wrap " dangerouslySetInnerHTML={{ __html: transformContentToImages(props.content) }} />
+      <h1 className="leading-[19px] flex flex-wrap text-wrap sm:leading-tight" dangerouslySetInnerHTML={{ __html: transformContentToImages(props.content) }} />
       <div className={[
         "flex",
         "gap-1",

@@ -223,7 +223,7 @@ const emojisProps = {
 <textarea
 type="text"
 placeholder="Type a message"
-className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  max-h-[200px] sm:max-h-[80px]  '
+className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  max-h-[200px] sm:max-h-[80px]  sm:min-h-[40px]  '
 value={inputValue}
 onChange={handleChange}
 ref={textareaRef}
