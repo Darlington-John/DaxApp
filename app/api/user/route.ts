@@ -41,10 +41,6 @@ const user = await User.findById(decoded.userId)
     path: 'contacts.messages.receiver',
     select: 'username email profile phone',
   })
-  .populate({
-    path: 'archive.user',
-    select: 'username email profile phone',
-  });// Populate archive user details
   
   if (!user) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });

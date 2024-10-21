@@ -6,10 +6,7 @@ interface ButtonState {
 }
 
 const initialState: ButtonState = {
-  activeButtonIndex:
-    typeof window !== 'undefined' && localStorage.getItem('activeButtonIndex')
-      ? Number(localStorage.getItem('activeButtonIndex'))
-      : 0, 
+  activeButtonIndex: 0, 
   previousButtonIndex: null, 
 };
 
@@ -20,11 +17,6 @@ const buttonSlice = createSlice({
     setActiveButton: (state, action) => {
       state.previousButtonIndex = state.activeButtonIndex; 
       state.activeButtonIndex = action.payload;
-
-      
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('activeButtonIndex', action.payload.toString());
-      }
     },
     goToPreviousButton: (state) => {
       if (state.previousButtonIndex !== null) {

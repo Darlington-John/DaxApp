@@ -7,7 +7,7 @@ const ReplyTo = (items: any) => {
   const { props, customClasses } = items;
   return (
     props.replyingTo && (
-      <div className={`bg-[#0000002e]  rounded-lg w-full ${props.replyingTo.startsWith('https') ? '' : 'py-3  px-4'}`}>
+      <div className={`bg-[#0000002e]  rounded-lg w-full ${props.replyingTo.startsWith('https') ? '' : 'py-3  px-4 sm:py-1 sm:px-2'}`}>
         {props.replyingTo.startsWith('https') ? (
           <>
             {props.replyingTo.endsWith('mp4') ? (

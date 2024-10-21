@@ -35,9 +35,11 @@ const {loading, user} = useUser();
         return activeViewIndex === 0;
       }
     };
+    const activeContactId = useSelector((state: any) => state.contacts.activeContactId);
+    const activeChat = user?.contacts.find((chat: any) => activeContactId === chat._id);
     return (
         shouldRender() &&(<div className="flex flex-col gap-6  w-full lg:gap-3 md:h-full"> 
-            <div className="flex items-center justify-between w-full px-4 lg:px-2">
+            <div className="flex items-center justify-between w-full px-4 lg:px-2 ">
             <h1 className="text-[22px] font-bold text-dimWhite bold  lg:text-lg   ">Chats
                 </h1>
             <div className='flex gap-6 items-center lg:gap-3'>
@@ -48,14 +50,15 @@ const {loading, user} = useUser();
     
             </div>
             </div>
-            <div className='flex flex-col px-2 lg:px-1 ' >
+
+            <div className='flex flex-col  lg:px-1  overflow-auto' >
               {loading? null: (user?.contacts
       .sort((a: any, b: any) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .map((data : any, index: any)=>{
                 const lastMessageRead= data.messages[data.messages.length - 1]?.sender.phone !== user.phone && data.messages[data.messages.length - 1]?.read === false;
 return(
-  <button className='flex items-center  h-[70px] border-b  border-b-1 border-deepBlue  px-2  lg:px-2 lg:h-[60px] gap-2' key={index + 1} onClick={() => {dispatch(setActiveContact(data._id)); handleViewClick(1)}}>
-  <img src={data.user.profile? data.user.profile: '/icons/default-user.svg'} className='  h-[50px]  w-[50px]  object-cover rounded-full lg:h-[35px] lg:w-[35px]' alt=''/>
+  <button className={`flex items-center  h-[70px] border-b  border-b-1 border-deepBlue  px-4  lg:px-2 lg:h-[60px] gap-2 duration-150 transition ease ${data._id===activeChat?._id ? 'bg-deepBlue' :'hover:bg-[#1c3a4d9c]'}`} key={index + 1} onClick={() => {dispatch(setActiveContact(data._id)); handleViewClick(0.2)}}>
+  <img src={data.user.profile? data.user.profile: '/icons/default-user.svg'} className='  h-[50px]  w-[50px]  object-cover rounded-full lg:h-[35px] lg:w-[35px] shrink-0' alt=''/>
   <div className='flex flex-col gap-0 w-full items-start overflow-hidden'>
     <div className='flex items-center w-full justify-between'>
       

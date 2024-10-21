@@ -22,15 +22,12 @@ const Dashboard = () => {
 
 
 <div className=" w-full  hidden  md:flex overflow-hidden">
-<div className={`w-[450px] py-3 flex shrink-0 bg-darkBlue h-full 2xl:w-[400px]  lg:w-[300px]  border-x border-[#262F34] md:h-[calc(100vh-45px)] sm:w-full   ${(activeViewIndex === 0||activeViewIndex === 0.1) ? ' ':'sm:hidden'}`}>
+<div className={`w-[450px] py-3 flex shrink-0 bg-darkBlue h-full 2xl:w-[400px]  lg:w-[300px]  border-x border-[#262F34] md:h-[calc(100vh-45px)] sm:w-full   ${[0, 0.1, 1, 2].includes(activeViewIndex) ? ' ' : 'sm:hidden'}`}>
 <ChatMenu/>
 </div>
-<div className={`w-full  h-full    overflow-hidden  ${activeViewIndex === 1? ' ':'sm:hidden'}`}>
+<div className={`w-full  h-full    overflow-hidden  ${activeViewIndex === 0.2? ' ':'sm:hidden'}`}>
     <View/>
 </div>
-</div>
-<div  className={`w-full  shrink-0 hidden md:flex  ${activeViewIndex === 1? ' sm:hidden':''}`}>
-<ChatBar/>
 </div>
     </main>);
 }

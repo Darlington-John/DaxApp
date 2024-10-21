@@ -181,8 +181,7 @@ const {loading, user}= useUser();
           activeContactId === chat._id && (
             <div key={chat._id} className="w-full relative h-full bg-[#050e15] flex flex-col justify-between sm:overflow-hidden sm:h-screen"   style={{
                 backgroundImage: `url(/images/doodle.svg)`}}>
-
-<ChatHeader chat={chat.user}/>
+<ChatHeader chat={chat.user} blockee={chat?.blockee}  blocker={chat?.blocker}/>
 
                              <div className="flex p-4  w-full h-full flex-col  gap-1  items-start px-16 overflow-auto view relative lg:px-10  lg:gap-3 sm:px-4" ref={scrollRef}>
                           {show &&(  <button onClick={scrollToBottom} className="bg-deepBlue p-3 rounded-full self-center  fixed  bottom-32  right-10"><Image src={down} className="w-3" alt=''/></button>)}
@@ -195,7 +194,7 @@ const {loading, user}= useUser();
 />
 ))}
                              </div>
-                <ChatInput/>
+                <ChatInput blockee={chat?.blockee}  blocker={chat?.blocker}/>
             </div>
           )
         )

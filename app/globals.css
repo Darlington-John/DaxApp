@@ -336,7 +336,9 @@ input[type="range"]::-webkit-slider-runnable-track {
 input[type="range"]:disabled::-webkit-slider-thumb {
   cursor: not-allowed;
 }
-
+.status::placeholder {
+color: #ffffff7d;
+}
 
 
 @media  screen and (max-width: 640px) {

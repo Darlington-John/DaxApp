@@ -15,31 +15,51 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           setLoading(false);
           return;
         }
-
-        // Long polling
+  
+        
+        const isTokenExpired = () => {
+          try {
+            const decodedToken = JSON.parse(atob(token.split('.')[1])); 
+            return decodedToken.exp * 1000 < Date.now(); 
+          } catch (error) {
+            console.error('Failed to parse token:', error);
+            return true; 
+          }
+        };
+  
+        if (isTokenExpired()) {
+          localStorage.removeItem('token'); 
+          window.location.href = '/auth/log-in'; 
+          return;
+        }
+  
+        
         const pollUserData = async () => {
           try {
             const res = await fetch('/api/user', {
               headers: { Authorization: `Bearer ${token}` },
             });
-
+  
             if (res.ok) {
               const data = await res.json();
               setUser(data.user);
-            } else {
-              // If unauthorized, redirect to login
+            } else if (res.status === 401 ||res.status === 404|| res.status === 500) {
+              
+              localStorage.removeItem('token');
               window.location.href = '/auth/log-in';
+              return;
+            } else {
+              console.warn('Unexpected response status:', res.status);
             }
           } catch (err) {
             console.error('Failed to fetch user', err);
-            window.location.href = '/auth/log-in';
           } finally {
-            // Continue polling after a delay
-            setTimeout(pollUserData, 1000); // Poll every 5 seconds
+            
+            setTimeout(pollUserData, 2000);
           }
         };
-
-        // Start polling
+  
+        
         pollUserData();
       } catch (error) {
         console.error('Error during fetching user:', error);
@@ -48,13 +68,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false);
       }
     };
-
+  
     fetchUser();
-    
-    // Cleanup function to clear the timeout on unmount
+  
     return () => {
-      setUser(null); // Clear user data
-      setLoading(true); // Reset loading state
+      setUser(null);
+      setLoading(true);
     };
   }, []);
 

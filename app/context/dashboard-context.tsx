@@ -121,10 +121,11 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     setIsRecording(false);
 setAudioUrl(null)
   }
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const providerValue = useMemo(() => ({
     replyMessage, setReplyMessage, handleReplyClick, image, setImage,video, setVideo, isRecording,isPaused,audioUrl,startRecording,stopRecording,pauseRecording,resumeRecording,formatDuration,setRecordVisible,recordingDuration,
-    recordVisible,hideRecording, setAudioUrl,audioData, setAudioData,audio, setAudio
-  }), [replyMessage, setReplyMessage, image, setImage, video, setVideo, handleReplyClick,isRecording,isPaused,audioUrl,startRecording,stopRecording,pauseRecording,resumeRecording ,formatDuration,    recordVisible,hideRecording, setAudioUrl,setRecordVisible,audioData, setAudioData,audio, setAudio]);
+    recordVisible,hideRecording, setAudioUrl,audioData, setAudioData,audio, setAudio, isOverlayOpen, setIsOverlayOpen
+  }), [replyMessage, setReplyMessage, image, setImage, video, setVideo, handleReplyClick,isRecording,isPaused,audioUrl,startRecording,stopRecording,pauseRecording,resumeRecording ,formatDuration,    recordVisible,hideRecording, setAudioUrl,setRecordVisible,audioData, setAudioData,audio, setAudio, isOverlayOpen, setIsOverlayOpen]);
 
   return (
     <DashboardContext.Provider value={providerValue}>

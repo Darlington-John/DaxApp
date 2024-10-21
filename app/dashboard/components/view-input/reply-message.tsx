@@ -11,12 +11,12 @@ const ReplyMessages = (props: any) => {
   const customClasses = { emojiClass: 'w-4  h-4', onlyEmojiClass: 'w-5  h-5 ' };
   return (<>
     {replyMessage && (
-      <div className="flex w-full items-center gap-4  bg-deepBlue  px-10 pt-2 z-20">
-        <div className=" bg-darkBlue  py-3 px-4 rounded-lg w-full">
-          <h1 className=" leading-[19px] text-sm text-dimWhite" dangerouslySetInnerHTML={{ __html: transformContentToImages(replyMessage, customClasses) }} />
+      <div className="flex w-full items-center gap-4  bg-deepBlue  px-10 pt-2 z-20 sm:px-5">
+        <div className=" bg-darkBlue  py-3 px-4 rounded-lg w-full sm:py-2 sm:px-3">
+          <h1 className=" leading-[19px] text-sm text-dimWhite flex-wrap flex" dangerouslySetInnerHTML={{ __html: transformContentToImages(replyMessage, customClasses) }} />
 
         </div>
-        <Image src={x} alt="" className="w-6 cursor-pointer" onClick={() => { setReplyMessage('') }} />
+        <Image src={x} alt="" className="w-6 cursor-pointer sm:w-5" onClick={() => { setReplyMessage('') }} />
       </div>
     )}
     {image && (

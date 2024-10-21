@@ -13,7 +13,9 @@ import edit from './../../public/icons/edit.svg'
 import acct from './../../public/icons/account.svg'
 import mail from './../../public/icons/mail.svg'
 import phone from './../../public/icons/phone.svg'
+import logout from '~/public/icons/log-out.svg'
 import { usePopup } from '~/utils/togglePopups';
+import { useScreenSize } from '~/utils/useScreenSize';
 const Profile = () => {
     const activeButtonIndex = useSelector((state: any) => state.buttons.activeButtonIndex);
 const {loading, user} =useUser();
@@ -84,6 +86,7 @@ const handleClick = () => {
 };
 const [bgColor, setBgColor] = useState('#b6a7c5');
 useEffect(() => {
+  if (typeof window !== 'undefined'){
   const getColor = async () => {
     const colorThief = new ColorThief();
     const img = document.createElement('img');
@@ -98,6 +101,7 @@ img.onload = () => {
   };
   };
   getColor();
+}
 }, [ user?.profile? user.profile: '/icons/default-user.svg']);
 const updateName = async (newUserName: string) => {
   try {
@@ -141,9 +145,28 @@ const [username, setUsername] = useState('');
       setLoaderVisible(false); 
     }
   };
+  const activeViewIndex = useSelector((state: any) => state.views.activeViewIndex);
+  const isScreenLarge = useScreenSize(640); 
+  const shouldRender = () => {
+    if (isScreenLarge) {
+      return activeButtonIndex === 2;
+    } else {
+      return activeViewIndex === 2;
+    }
+  };
+
+  const [isMounted, setIsMounted] = useState(false);
+
+useEffect(() => {
+  setIsMounted(true);
+}, []);
+
+if (!isMounted) {
+  return null;
+}
     return (
         <>
-        {activeButtonIndex === 4 &&(
+        {shouldRender() &&(
           <>
                   <div className="flex flex-col gap-6 px-4 w-full"> 
         <div className="flex items-center justify-between w-full">
@@ -186,7 +209,18 @@ const [username, setUsername] = useState('');
 <h1 className='text-dimWhite text-base'>{user?.email}</h1>
 </div>
 </div>
+
 <p className='text-xs text-dimGrey'>Name and phone number will be visible to all<br/> your DaxApp contacts</p>
+<button className='flex  items-start justify-between gap-4 w-full py-4   border-t  border-deepBlue' onClick={async () => {
+            localStorage.removeItem('token');
+            window.location.href = '/auth/log-in'; 
+          }} >
+<div className='flex items-start gap-5 ' >
+<Image src={logout} className='w-7' alt=''/>
+
+<h1 className='text-dimWhite text-base'>Logout</h1>
+</div>
+</button>
 </div>
             </div>
             </>

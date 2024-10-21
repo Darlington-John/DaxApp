@@ -17,7 +17,7 @@ import Emojis from "./emoji-picker";
 import UploadMedia from "./upload-media";
 import ReplyMessages from "./reply-message";
 import AudioRecorder from "./record-audio";
-const ChatInput = () => {
+const ChatInput = ({blockee,  blocker}: any) => {
     const {user}= useUser();
     const{replyMessage, setReplyMessage, image, setImage, video, setVideo, isRecording,isPaused,audioUrl,startRecording,stopRecording,pauseRecording,resumeRecording,formatDuration,recordingDuration,     hideRecording,audioData, setAudioData,recordVisible, setRecordVisible, audio, setAudio}  =useDashboard();
     const activeContactId = useSelector((state: any) => state.contacts.activeContactId);
@@ -200,43 +200,45 @@ const emojisProps = {
     isRecording,isPaused,audioUrl,stopRecording,pauseRecording,resumeRecording,formatDuration,recordingDuration,hideRecording,audioData, setAudioData,handleSendMedia, handleSendAudio, uploadingRec
   };
   const replyProps={replyMessage, setReplyMessage,image, setImage,video,setVideo,audio, setAudio};
-    return (  <div className="flex flex-col w-full ">
-     <Emojis {...emojisProps}/>
- <UploadMedia {...mediaProps}/>
-  <ReplyMessages  {...replyProps}/>
-                 <input type="file" onChange={handleFileChange}    ref={fileInputRef} className='hidden'  accept="image/*,video/*"/>
-                 
-{recordVisible?<AudioRecorder {...recordProps}/>: (<div  className={`w-full p-4 bg-deepBlue flex gap-4 items-center  relative z-20 lg:p-2 lg:gap-2  ${upload && 'hidden'}`}>
-         <Image src={emoji} alt="" className="w-7 cursor-pointer lg:w-5 " onClick={toggleEmojisPopup}/>
-         <div className="shrink-0 relative">
-
-         <Image src={plus} alt="" className="w-7 cursor-pointer lg:w-6" onClick={toggleAttachPopup}/>
-         {attach && (
-          <div className={`flex flex-col bg-deepBlue   absolute  w-[220px] rounded-md overflow-hidden z-[200] duration-300 ease  p-2 -top-[80px] lg:-top-[60px] lg:w-[150px]  lg:p-1  ${isAttach ? 'opacity-100' :  ' opacity-0'}   `} ref={attachRef}>
-<button className="flex gap-3 items-center  p-2  hover:bg-dimBlue   duration-150  rounded-md" onClick={handleClick}>
-  <Image src={img} className="w-4" alt=""/>
-  <h1 className="text-sm text-white  lg:text-xs">Photos & Videos</h1>
-</button>
+    return (  
+    blockee || blocker?(<div className="w-full p-4  text-center text-dimWhite  bg-darkBlue  text-sm ">Can't send message to a blocked contact </div>) :( <div className="flex flex-col w-full  ">
+      <Emojis {...emojisProps}/>
+  <UploadMedia {...mediaProps}/>
+   <ReplyMessages  {...replyProps}/>
+                  <input type="file" onChange={handleFileChange}    ref={fileInputRef} className='hidden'  accept="image/*,video/*"/>
+                  
+ {recordVisible?<AudioRecorder {...recordProps}/>: (<div  className={`w-full p-4 bg-deepBlue flex gap-4 items-center  relative z-20 lg:p-2 lg:gap-2  ${upload && 'hidden'}`}>
+          <Image src={emoji} alt="" className="w-7 cursor-pointer lg:w-5 " onClick={toggleEmojisPopup}/>
+          <div className="shrink-0 relative">
+ 
+          <Image src={plus} alt="" className="w-7 cursor-pointer lg:w-6" onClick={toggleAttachPopup}/>
+          {attach && (
+           <div className={`flex flex-col bg-deepBlue   absolute  w-[220px] rounded-md overflow-hidden z-[200] duration-300 ease  p-2 -top-[80px] lg:-top-[60px] lg:w-[150px]  lg:p-1  ${isAttach ? 'opacity-100' :  ' opacity-0'}   `} ref={attachRef}>
+ <button className="flex gap-3 items-center  p-2  hover:bg-dimBlue   duration-150  rounded-md" onClick={handleClick}>
+   <Image src={img} className="w-4" alt=""/>
+   <h1 className="text-sm text-white  lg:text-xs">Photos & Videos</h1>
+ </button>
+           </div>
+          )}
           </div>
-         )}
-         </div>
-<textarea
-type="text"
-placeholder="Type a message"
-className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  max-h-[200px] sm:max-h-[80px]  sm:min-h-[40px]  '
-value={inputValue}
-onChange={handleChange}
-ref={textareaRef}
-style={{ overflow: 'hidden', height: '40px' }}
-//@ts-ignore
-onKeyDown={handleKeyDown}
-autoFocus/>
-{isLoading ? <Image src={loading} alt="" className="w-7 lg:w-5   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7 lg:w-5   cursor-pointer" onClick={startRecording}/> : <Image src={send} alt="" className="w-7 lg:w-5  cursor-pointer" onClick={handleSendMessage}/>}</> }
-
- </div>)}
-                    
-     
-        </div>);
+ <textarea
+ type="text"
+ placeholder="Type a message"
+ className='text-sm font-semibold  outline-none px-2 py-2 rounded-md rounded-md  w-full  bg-[#27516B]  focus:ring-2  ring-blue text-white resize-none  max-h-[200px] sm:max-h-[80px]  sm:min-h-[40px]  '
+ value={inputValue}
+ onChange={handleChange}
+ ref={textareaRef}
+ style={{ overflow: 'hidden', height: '40px' }}
+ //@ts-ignore
+ onKeyDown={handleKeyDown}
+ autoFocus/>
+ {isLoading ? <Image src={loading} alt="" className="w-7 lg:w-5   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7 lg:w-5   cursor-pointer" onClick={startRecording}/> : <Image src={send} alt="" className="w-7 lg:w-5  cursor-pointer" onClick={handleSendMessage}/>}</> }
+ 
+  </div>)}
+                     
+      
+         </div>)
+   );
 }
  
 export default ChatInput;

@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 const messageSchema: Schema = new Schema({
   sender: { type: mongoose.Types.ObjectId, ref: 'User', required: true }, 
@@ -12,6 +13,8 @@ const messageSchema: Schema = new Schema({
 
 const contactsSchema: Schema = new Schema({
   user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  blocker:{ type:Boolean,  default: false },
+  blockee:{ type:Boolean,  default: false },
   messages: { type: [messageSchema], default: [] },
 }, { timestamps: true }); 
 interface IMessage {
@@ -30,16 +33,31 @@ interface IMessage {
 interface IContacts {
   user: Types.ObjectId;
   messages: IMessage[];
+  blocker?:boolean,
+  blockee?:boolean,
 }
 
-const archiveSchema: Schema = new Schema({
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
-}, { timestamps: true }); 
 
-interface IArchive {
-  user: Types.ObjectId; 
+
+const statusSchema: Schema = new mongoose.Schema({
+  sender: { type: mongoose.Types.ObjectId, ref: 'User', required: true }, 
+  text: { type: Boolean,default: false},
+  contacts:[
+ {
+     contact: { type: mongoose.Types.ObjectId, ref: 'User', required: true }
+  }
+  ],
+  background:{ type: String,required: false},
+  content: { type: String,default: false},
+}, { timestamps: true });
+
+interface IStatus extends Document {
+  sender: Types.ObjectId;
+  text?: boolean;
+  background?: string;
+  content?: string;
+  contacts: { contact: Types.ObjectId; seen: boolean }
 }
-
 interface IUser extends Document {
   username: string;
   email: string;
@@ -47,7 +65,6 @@ interface IUser extends Document {
   profile: string;
   phone: string;
   contacts: IContacts[];
-  archive: IArchive[];
   createdAt?: Date; 
   updatedAt?: Date;
 }
@@ -58,11 +75,12 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phone: { type: String, required: true },
-  contacts: { type: [contactsSchema], default: [] }, 
-  archive: { type: [archiveSchema], default: [] },
+  contacts: { type: [contactsSchema], default: [] }
 }, { timestamps: true }); 
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
+  const Status: Model<IStatus> = mongoose.models.Status || mongoose.model<IStatus>('Status', statusSchema);
 export default User;
-export type { IUser };
+export {Status}
+export type { IUser, IStatus };

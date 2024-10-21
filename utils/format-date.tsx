@@ -25,12 +25,18 @@ export function transformDate(dateString: string): string {
 export function formatTime(dateString: string): string {
   const date = new Date(dateString);
   
-  // Format the time to display in "h:mm a" (e.g., "5:55 AM")
+  
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date passed:', dateString);
+    return 'Invalid Date'; 
+  }
+
+  
   return format(date, 'h:mm a');
 }
 
 export const isMoreThanOneDay = (date: string | Date) => {
-  const oneDayInMs = 24 * 60 * 60 * 1000; // One day in milliseconds
+  const oneDayInMs = 24 * 60 * 60 * 1000; 
   const now = new Date();
   const updatedDate = new Date(date);
 
