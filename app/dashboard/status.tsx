@@ -108,7 +108,7 @@ toggleStatusPopup();
       type,isType,typeRef, toggleStatusPopup
     }
     const filterOwnedStatus=
-    statuses?.filter((status: any) => status?.sender._id === user?._id);
+    statuses?.filter((status: any) => status?.sender?._id === user?._id);
     const filteredStatuses = statuses?.filter((status: any) => 
       status.contacts.some((contact: any) => contact.contact === user?._id)
     );
@@ -132,7 +132,7 @@ toggleStatusPopup();
     const groupedStatusesArray = groupedStatuses ? Object.values(groupedStatuses) : [];
     const viewerProps={isViewing,view, viewRef,  toggleViewPopup, statuses, filterOwnedStatus }
     const lastStatus = statuses
-  ?.filter((status: any) => status?.sender._id === user?._id)
+  ?.filter((status: any) => status?.sender?._id === user?._id)
   .slice(-1)[0];
 
     return (

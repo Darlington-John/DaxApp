@@ -25,10 +25,20 @@ username: '',
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const [submitting, setSubmitting]= useState(false);
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const allFieldsFilled = Object.values(formData).every((field) => field.trim() !== '');
+    if (!allFieldsFilled) {
+      return;
+    }
+    if(submitting){
+      return;
+    }
+setSubmitting(true);
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
@@ -42,9 +52,12 @@ username: '',
         window.location.href = '/dashboard'; 
        const data = await res.json();
        localStorage.setItem('token', data.token);
+       
+setSubmitting(false);
       } else {
         const error = await res.json();
         alert(error.error);
+        setSubmitting(false);
       }
     } catch (error) {
       console.error('Error during sign up:', error);
@@ -148,7 +161,7 @@ className="w-5  h-5"
       </div>
       </div>
       <div className='flex items-center justify-between  pt-2'>
-        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out'>Sign up</button>
+        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out h-[40px]' disabled={submitting}>{submitting?(<img src={'/images/doubleWhite.gif'} alt="" className='w-5 mx-auto'/>): 'Sign up'}</button>
 
         <Link href="/auth/log-in" className='text-xs text-lightGrey '>Already  have an account?</Link>
         

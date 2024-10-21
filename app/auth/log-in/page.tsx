@@ -118,7 +118,7 @@ className="w-5  h-5"
       {error  ==='Incorrect password' && (      <h1 className='text-xs text-red'>{error}</h1>)}
           </div>
           <div className='flex items-center justify-between  pt-2'>
-        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out'  disabled={check}>{loading?(<img src={'/images/doubleWhite.gif'} alt="" className='w-5 mx-auto'/>): 'Login'}</button>
+        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out h-[40px]'  disabled={check}>{loading?(<img src={'/images/doubleWhite.gif'} alt="" className='w-5 mx-auto'/>): 'Login'}</button>
         <Link href="/auth/sign-up" className='text-xs text-lightGrey '>Don{`'`}t  have an account?</Link>
         </div>
       </form>

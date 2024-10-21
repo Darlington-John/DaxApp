@@ -3,6 +3,7 @@ import Image from 'next/image';
 import ellipis from './../../public/icons/menu.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import newChat from './../../public/icons/new-chat.svg'
+import nochat from '~/public/images/no-chat.svg'
 import { setActiveButton } from '~/store/buttonSlice';
 import audioMic from '~/public/icons/micShadow.svg'
 import photo from './../../public/icons/photo.svg'
@@ -38,7 +39,7 @@ const {loading, user} = useUser();
     const activeContactId = useSelector((state: any) => state.contacts.activeContactId);
     const activeChat = user?.contacts.find((chat: any) => activeContactId === chat._id);
     return (
-        shouldRender() &&(<div className="flex flex-col gap-6  w-full lg:gap-3 md:h-full"> 
+        shouldRender() &&(<div className="flex flex-col gap-6  w-full lg:gap-3 md:h-full h-full"> 
             <div className="flex items-center justify-between w-full px-4 lg:px-2 ">
             <h1 className="text-[22px] font-bold text-dimWhite bold  lg:text-lg   ">Chats
                 </h1>
@@ -51,8 +52,11 @@ const {loading, user} = useUser();
             </div>
             </div>
 
-            <div className='flex flex-col  lg:px-1  overflow-auto' >
-              {loading? null: (user?.contacts
+            <div className='flex flex-col  lg:px-1  overflow-auto h-full sm:px-0' >
+              {loading?
+               null:<>
+               {(user?.contacts.length!== 0?<>{
+               (user?.contacts
       .sort((a: any, b: any) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .map((data : any, index: any)=>{
                 const lastMessageRead= data.messages[data.messages.length - 1]?.sender.phone !== user.phone && data.messages[data.messages.length - 1]?.read === false;
@@ -70,9 +74,9 @@ return(
 </h1>
     </div>
    <div className={`flex items-center gap-1   ${lastMessageRead && 'justify-between  w-full'} `}>
-{data.messages[data.messages.length - 1]?.image && (<div className='flex gap-1 items-center'><Image src={photo} className='w-4' alt=''/><h1 className='text-sm text-silver'>Photo</h1></div>)}
-{data.messages[data.messages.length - 1]?.video && (<div className='flex gap-1 items-center'><Image src={photo} className='w-4' alt=''/><h1 className='text-sm text-silver'>Video</h1></div>)}
-{data.messages[data.messages.length - 1]?.audio && (<div className='flex gap-1 items-center'><Image src={audioMic} className='w-4' alt=''/><h1 className='text-sm text-silver'>Audio</h1></div>)}
+{data.messages[data.messages.length - 1]?.image && (<div className='flex gap-1 items-center'><Image src={photo} className='w-4 sm:w-3' alt=''/><h1 className='text-sm text-silver sm:text-xs'>Photo</h1></div>)}
+{data.messages[data.messages.length - 1]?.video && (<div className='flex gap-1 items-center'><Image src={photo} className='w-4 sm:w-3' alt=''/><h1 className='text-sm text-silver sm:text-xs'>Video</h1></div>)}
+{data.messages[data.messages.length - 1]?.audio && (<div className='flex gap-1 items-center'><Image src={audioMic} className='w-4 sm:w-3' alt=''/><h1 className='text-sm text-silver sm:text-xs'>Audio</h1></div>)}
 {data.messages[data.messages.length - 1]?.sender.phone === user.phone && (
 <>{data.messages[data.messages.length - 1]?.read === true?<Image src={sentBlue} alt="" className="w-4"/>:<Image src={sentGrey} alt="" className="w-4"/>}</>
 
@@ -97,6 +101,20 @@ __html: data.messages && data.messages.length > 0
 </button>
 )
 }))}
+               </>:<div className='flex flex-col text-dimWhite gap-2 p-2  h-full items-center justify-center '>
+<Image src={nochat} alt='' className='w-[80%]'/>
+<div className='flex gap-3 items-center flex-col '>
+<h1 className='text-xl font-[family-name:var(--font-mulish-bold)] sm:text-base'>Stay connected to loved ones</h1>
+<button className='text-sm text-blue underline ' onClick={() => {
+        if (isScreenLarge) {
+          handleClick(0.1); 
+        } else {
+          handleViewClick(0.1); 
+        }
+      }}>Start a new chat today</button>
+</div>
+               </div>)}</>
+                }
             </div>
             </div>)
           );

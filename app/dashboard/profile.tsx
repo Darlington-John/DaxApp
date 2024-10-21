@@ -168,8 +168,8 @@ if (!isMounted) {
         <>
         {shouldRender() &&(
           <>
-                  <div className="flex flex-col gap-6 px-4 w-full"> 
-        <div className="flex items-center justify-between w-full">
+                  <div className="flex flex-col gap-6 px-4 w-full overflow-auto"> 
+        <div className="flex items-center justify-between w-full ">
         <h1 className="text-[22px] font-bold text-dimWhite font-[family-name:var(--font-mulish-bold)]">Profile 
             </h1>
         </div>
