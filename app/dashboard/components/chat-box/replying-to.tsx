@@ -7,7 +7,7 @@ const ReplyTo = (items: any) => {
   const { props, customClasses } = items;
   return (
     props.replyingTo && (
-      <div className={`bg-[#0000002e]  rounded-lg w-full ${props.replyingTo.startsWith('https') ? '' : 'py-3  px-4 sm:py-1 sm:px-2'}`}>
+      <div className={`bg-[#0000002e]  rounded-lg w-full  ${props.replyingTo.startsWith('https') ? '' : 'py-3  px-4 sm:py-1 sm:px-2'}`}>
         {props.replyingTo.startsWith('https') ? (
           <>
             {props.replyingTo.endsWith('mp4') ? (
@@ -24,7 +24,7 @@ const ReplyTo = (items: any) => {
                 <CustomAudioPlayer audioUrl={props?.replyingTo} chat /><div className="flex flex-col items-end pr-2">  <h1 className="text-xs text-lightGrey">Audio</h1>
                   <Image src={audioMic} alt='' className='w-3.5  self-end' /></div></div>) : (<div className="flex items-center justify-between"><img src={props.replyingTo} className="object-cover w-16 h-16  rounded-lg" alt='' /><div className="flex flex-col items-end pr-2">  <h1 className="text-xs text-lightGrey">Photo</h1>
                     <Image src={photo} alt='' className='w-3.5  self-end' /></div></div>)}</>)}
-          </>) : (<h1 className=" leading-[19px] text-sm text-dimWhite text-start" dangerouslySetInnerHTML={{ __html: transformContentToImages(props.replyingTo, customClasses) }} />)}
+          </>) : (<h1 className=" leading-[19px] text-sm text-dimWhite text-start flex flex-wrap items-center" dangerouslySetInnerHTML={{ __html: transformContentToImages(props.replyingTo, customClasses) }} />)}
       </div>
     )
   );

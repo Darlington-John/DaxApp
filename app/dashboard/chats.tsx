@@ -15,6 +15,7 @@ import sentBlue from './../../public/icons/sent-blue.svg'
 import { transformContentToImages } from '~/utils/transfrom-emojis-to-img';
 import { setActiveView } from '~/store/viewSlice';
 import { useScreenSize } from '~/utils/useScreenSize';
+import { useSound } from '~/utils/play-sound-on-new-message';
 const Chats = () => {
     const activeButtonIndex = useSelector((state: any) => state.buttons.activeButtonIndex);
     const activeViewIndex = useSelector((state: any) => state.views.activeViewIndex);
@@ -38,6 +39,8 @@ const {loading, user} = useUser();
     };
     const activeContactId = useSelector((state: any) => state.contacts.activeContactId);
     const activeChat = user?.contacts.find((chat: any) => activeContactId === chat._id);
+    const contacts= user?.contacts;
+    useSound(contacts, '/ding.mp3');
     return (
         shouldRender() &&(<div className="flex flex-col gap-6  w-full lg:gap-3 md:h-full h-full"> 
             <div className="flex items-center justify-between w-full px-4 lg:px-2 ">

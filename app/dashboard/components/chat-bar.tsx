@@ -8,9 +8,11 @@ import { setActiveButton } from '~/store/buttonSlice';
 import { useUser } from "~/app/context/auth-context";
 import { setActiveView } from "~/store/viewSlice";
 import { useScreenSize } from "~/utils/useScreenSize";
+import { countUnreadMessages } from "~/utils/count-unread-messages";
 const ChatBar = () => {
 const {loading, user} = useUser();
   const dispatch = useDispatch();
+  const unreadMessages= countUnreadMessages()
   const activeButtonIndex = useSelector((state: any) => state.buttons.activeButtonIndex);
   const activeViewIndex = useSelector((state: any) => state.views.activeViewIndex);
   const handleClick = (index: number) => {
@@ -35,7 +37,17 @@ const {loading, user} = useUser();
         className={`tooltip-1    p-3 lg:p-2  transition duration-150 rounded-full flex gap-3 md:p-3   ${
           String(activeButtonIndex || activeViewIndex).startsWith('0') ? 'bg-darkBlue' : ''
         }`}>
+          <div className="relative">
+            {unreadMessages >0 && (
+            <span className="bg-blue p-1 text-[10px] text-darkBlue absolute -top-2  left-3 h-4 w-4 rounded-full   flex items-center  justify-center">
+              <span>
+              {unreadMessages}
+              </span>
+            </span>
+          )}
 <Image src={chat} alt="" className="w-6 lg:w-5"/>
+</div>
+
 <h1 className="hidden md:flex text-base  text-blue">Chats</h1>
 <Tooltip
     anchorSelect=".tooltip-1"
