@@ -8,6 +8,7 @@ body::-webkit-scrollbar {
   width: 0px;
 }
 
+
 .bubble {
   --c: #0AA0EA;
 }
@@ -348,4 +349,14 @@ color: #ffffff7d;
   .view::-webkit-scrollbar-thumb:hover {
     background: rgba(128, 128, 128, 0.69); 
   }
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff !important;
+    box-shadow: inset 0 0 20px 20px #1C3A4D;
 }

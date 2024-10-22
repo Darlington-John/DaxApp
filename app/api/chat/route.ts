@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     const { userId, receiverNumber, message, reply} = await req.json();
 
-    // Find the sender and receiver based on phone numbers
+    
     const sender = await User.findOne({ phone: userId });
     const receiver = await User.findOne({ phone: receiverNumber });
 
@@ -17,16 +17,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Find the sender's contact for the receiver
+    
     let senderContact = sender.contacts.find(
       (contact: any) => String(contact.user) === String(receiver._id)
     );
-    // If the contact doesn't exist, add it
+    
     if (!senderContact) {
       sender.contacts.push({ user: receiver._id as mongoose.Types.ObjectId, messages: [] });
-      senderContact = sender.contacts[sender.contacts.length - 1];  // Reference the newly added contact
+      senderContact = sender.contacts[sender.contacts.length - 1];  
     }
-    // Find the receiver's contact for the sender
+    
     let receiverContact = receiver.contacts.find(
       (contact: any) => String(contact.user) === String(sender._id)
     );
@@ -36,21 +36,21 @@ export async function POST(req: NextRequest) {
       receiverContact = receiver.contacts[receiver.contacts.length - 1];
     }
 
-    // Create the message object
+    
     const newMessage:any = {
       sender: sender._id,
       receiver: receiver._id,
       content: message,
       replyingTo: reply || null,
 
-      read: false,  // Message is unread by default
+      read: false,  
     };
 
-    // Add the message to both sender's and receiver's contact messages
+    
     senderContact.messages.push(newMessage);
     receiverContact.messages.push(newMessage);
 
-    // Save both users
+    
     await sender.save();
     await receiver.save();
 

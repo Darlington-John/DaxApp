@@ -3,6 +3,7 @@ import { NextResponse,NextRequest } from 'next/server';
 import connectMongo from '~/lib/mongodb';
 import { Status } from '~/models/User';
 import jwt from 'jsonwebtoken';
+import { cleanupOldStatuses } from '~/utils/cleanup-statuses';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 export async function GET(req: NextRequest) {
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest) {
     if (!decoded.userId) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
-
+await cleanupOldStatuses();
     const statuses = await Status.find()
       .populate('sender', 'username profile') 
       .lean();

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import loading from '~/public/images/doubleWhite.gif'
 import { useState, ChangeEvent, FormEvent, useEffect
 } from 'react';
 import doodle from './../../../public/images/doodle.jpg'
@@ -161,7 +162,7 @@ className="w-5  h-5"
       </div>
       </div>
       <div className='flex items-center justify-between  pt-2'>
-        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out h-[40px]' disabled={submitting}>{submitting?(<img src={'/images/doubleWhite.gif'} alt="" className='w-5 mx-auto'/>): 'Sign up'}</button>
+        <button type="submit" className='bg-blue  text-darkBlue  text-sm font-semibold py-2 w-[100px]  rounded-full hover:bg-darkBlue hover:ring hover:ring-blue  hover:text-blue   transition duration-300 ease-out h-[40px]' disabled={submitting}>{submitting?(<Image src={loading} alt="" className='w-5 mx-auto' />): 'Sign up'}</button>
 
         <Link href="/auth/log-in" className='text-xs text-lightGrey '>Already  have an account?</Link>
         
