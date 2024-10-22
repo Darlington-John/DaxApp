@@ -88,9 +88,11 @@ const { statuses, handleSelectSenderStatuses} = useStatuses();
           const data = await res.json();
           if (res.ok) {
             console.log('Message sent:', data);
-            setInputValue(''); 
-setSendingStatus(false);
-toggleStatusPopup();
+            
+
+setTimeout(()=>{toggleStatusPopup(); 
+  setInputValue(''); 
+  setSendingStatus(false);}, 5000)
           } else {
             setSendingStatus(false)
             alert(`An error occured`);

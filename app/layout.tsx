@@ -9,7 +9,6 @@ import store from '~/store';
 import { DashboardProvider } from "./context/dashboard-context";
 import { StatusProvider } from "./context/status-context";
 
-
 const mulish = localFont({
   src: "./fonts/mulish.ttf",
   variable: "--font-mulish",

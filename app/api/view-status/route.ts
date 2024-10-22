@@ -8,11 +8,10 @@ import { cleanupOldStatuses } from '~/utils/cleanup-statuses';
 export async function GET() {
   try {
     await connectMongo();
-    await cleanupOldStatuses();
     const statuses = await Status.find()
       .populate('sender', 'username profile') 
       .lean();
-
+      await cleanupOldStatuses();
     return NextResponse.json({ statuses });
   } catch (error) {
     console.error('Error fetching statuses:', error);
