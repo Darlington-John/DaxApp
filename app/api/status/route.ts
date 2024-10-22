@@ -34,7 +34,10 @@ export async function POST(req: NextRequest) {
     await newStatus.save();
 
     
-    return NextResponse.json({ message: 'Status created successfully', status: newStatus });
+return NextResponse.json(
+  { message: 'Status created successfully', status: newStatus },
+  { headers: { 'Cache-Control': 'no-store' } } 
+);
   } catch (error) {
     console.error('Error creating status:', error);
     return NextResponse.json({ error: 'An error occurred while creating status' }, { status: 500 });
