@@ -9,7 +9,9 @@ export async function GET() {
     const statuses = await Status.find()
       .populate('sender', 'username profile') 
       .lean();
-    return NextResponse.json({ statuses });
+    return NextResponse.json({ statuses },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
   } catch (error) {
     console.error('Error fetching statuses:', error);
     return NextResponse.json({ error: 'Failed to fetch statuses' }, { status: 500 });
