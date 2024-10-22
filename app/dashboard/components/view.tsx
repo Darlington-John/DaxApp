@@ -205,7 +205,7 @@ const {loading, user}= useUser();
         <div  className="flex gap-1  items-center">
         <Image src={me} alt="" className="w-6 lg:w-4"/>
         <h1 className="font-bold  font-[family-name:var(--font-mulish-bold)] text-blue text-3xl  lg:text-xl">
-            DaxApp
+            DaxApkdkd
         </h1>
         </div>
             </div>
