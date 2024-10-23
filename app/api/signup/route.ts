@@ -18,10 +18,7 @@ export async function POST(req: NextRequest) {
 
     
     const { username, email, password , phone} = await req.json();
-    console.log('Received data:', { username, email, password, phone });
-
-    
-    if (!username || !email || !password || !phone) {
+if (!username || !email || !password || !phone) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -54,7 +51,6 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ message: 'User created successfully', token }, { status: 201 });
   } catch (error) {
-    console.error('Error during sign up:', error);
     return NextResponse.json({ error: 'An error occurred during sign up' }, { status: 500 });
   }
 }

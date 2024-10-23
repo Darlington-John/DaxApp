@@ -119,7 +119,6 @@ const updateName = async (newUserName: string) => {
     const data = await res.json();
 
     if (res.ok) {
-      console.log('Name updated successfully:', data.user);
       toggleEditNamePopup();
     } else {
       console.error('Failed to update name:', data.error);

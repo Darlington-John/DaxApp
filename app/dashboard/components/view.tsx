@@ -30,16 +30,14 @@ const {loading, user}= useUser();
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            receiverId: user._id, // Receiver's ID (logged-in user)
-            senderPhone, // Sender's phone
+            receiverId: user._id, 
+            senderPhone, 
           }),
         });
     
         const data = await res.json();
-        if (res.ok) {
-          console.log('Messages marked as read:', data);
-        } else {
-          console.error('Failed to mark messages as read:', data.error);
+        if (!res.ok) {
+          console.log('Messages not marked as read:', data);
         }
       } catch (error) {
         console.error('Error marking messages as read:', error);
@@ -74,12 +72,9 @@ const {loading, user}= useUser();
         });
     
         const data = await res.json();
-        if (res.ok) {
-          console.log('Message deleted:', data);
-          // Optionally update the local UI here after deletion
-        } else {
+        if (!res.ok) {
           alert('Failed to delete message: ' + data.error);
-        }
+        } 
       } catch (error) {
         console.error('Error deleting message:', error);
         alert('Error deleting message.');
@@ -104,12 +99,12 @@ const {loading, user}= useUser();
         const url = URL.createObjectURL(blob);
   
         link.href = url;
-        link.setAttribute('download', 'daxlightning.jpg'); // Custom file name or default
+        link.setAttribute('download', 'daxlightning.jpg'); 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
   
-        // Release the blob URL after the download
+        
         URL.revokeObjectURL(url);
       } catch (error) {
         console.error('Error downloading the image:', error);
@@ -118,17 +113,17 @@ const {loading, user}= useUser();
     const handleDownloadVideo = async (videoUrl: string) => {
       try {
         const response = await fetch(videoUrl);
-        const blob = await response.blob(); // Get the video as a blob
+        const blob = await response.blob(); 
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
     
         link.href = url;
-        link.setAttribute('download', 'daxlightning.mp4'); // Set the video file name and extension
+        link.setAttribute('download', 'daxlightning.mp4'); 
         document.body.appendChild(link);
-        link.click(); // Trigger the download
-        document.body.removeChild(link); // Clean up the DOM
+        link.click(); 
+        document.body.removeChild(link); 
     
-        // Release the blob URL after the download
+        
         URL.revokeObjectURL(url);
       } catch (error) {
         console.error('Error downloading the video:', error);
@@ -172,7 +167,7 @@ const {loading, user}= useUser();
         });
       }
       prevMessageLength.current = activeChat?.messages.length;
-    }, [activeChat?.messages.length]);
+    }, [activeChat?.messages.length, activeContactId]);
 
     
     return (
@@ -201,7 +196,7 @@ const {loading, user}= useUser();
       ) : (
 <div className="w-full h-full   py-3 bg-[#1F2937] flex items-center justify-center ">
             <div className="flex flex-col gap-4 items-center md:w-full">
-        <Image src={intro} alt="" className="lg:w-60"/>
+        <Image src={intro} alt="" className="lg:w-60" priority/>
         <div  className="flex gap-1  items-center">
         <Image src={me} alt="" className="w-6 lg:w-4"/>
         <h1 className="font-bold  font-[family-name:var(--font-mulish-bold)] text-blue text-3xl  lg:text-xl">

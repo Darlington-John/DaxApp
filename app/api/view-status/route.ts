@@ -30,7 +30,7 @@ await cleanupOldStatuses();
       .populate('sender', 'username profile') 
       .lean();
 
-    return NextResponse.json({ statuses }, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json({ statuses });
   } catch (error) {
     console.error('Error fetching statuses:', error);
     return NextResponse.json({ error: 'Failed to fetch statuses' }, { status: 500 });

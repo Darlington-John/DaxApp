@@ -25,7 +25,6 @@ export const StatusProvider = ({ children }: { children: React.ReactNode }) => {
                 const data = await res.json();
                 setStatuses(data.statuses);
               } else {
-             console.log('An error occured')
                 return;
               }
             } catch (err) {

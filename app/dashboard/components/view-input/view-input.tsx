@@ -65,7 +65,6 @@ setIsLoading(true);
     
         const data = await res.json();
         if (res.ok) {
-          console.log('Message sent:', data);
           setInputValue(''); 
           setReplyMessage('');
 setImage('');
@@ -74,7 +73,7 @@ setAudio('');
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert(`An error occured`);
+          alert(`An error occured: ${data}`);
         }
       } catch (error) {
         console.error('Error sending message:', error);
@@ -132,7 +131,6 @@ setImage('');
 
     const data = await res.json();
     if (res.ok) {
-      console.log('Message sent:', data);
       setInputValue(''); 
       setIsLoading(false);
       setUploading(false);
@@ -167,12 +165,11 @@ setUploadingRec(true);
 
     const data = await res.json();
     if (res.ok) {
-      console.log('Message sent:', data);
       setUploadingRec(false);
       stopRecording();
       setRecordVisible(false)
     } else {
-      alert(`An error occured`);
+      alert(`An error occured: ${data}`);
       setUploadingRec(false);
     }
   } catch (error) {
@@ -232,7 +229,7 @@ const emojisProps = {
  //@ts-ignore
  onKeyDown={handleKeyDown}
  autoFocus/>
- {isLoading ? <Image src={loading} alt="" className="w-7 lg:w-5   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7 lg:w-5   cursor-pointer" onClick={startRecording}/> : <Image src={send} alt="" className="w-7 lg:w-5  cursor-pointer" onClick={handleSendMessage}/>}</> }
+ {isLoading ? <Image src={loading} alt="" className="w-7 lg:w-5   cursor-pointer"/>: <>{inputValue ===''?<Image src={mic} alt="" className="w-7 lg:w-5   cursor-pointer" onClick={startRecording}/> : <Image src={send}priority  alt="" className="w-7 lg:w-5  cursor-pointer" onClick={handleSendMessage}/>}</> }
  
   </div>)}
                      

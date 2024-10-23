@@ -87,7 +87,6 @@ const { statuses, handleSelectSenderStatuses} = useStatuses();
       
           const data = await res.json();
           if (res.ok) {
-            console.log('Message sent:', data);
             
 
 setTimeout(()=>{toggleStatusPopup(); 
@@ -95,7 +94,7 @@ setTimeout(()=>{toggleStatusPopup();
   setSendingStatus(false);}, 5000)
           } else {
             setSendingStatus(false)
-            alert(`An error occured`);
+            alert(`An error occured: ${data}`);
           }
         } catch (error) {
           console.error('Error sending message:', error);

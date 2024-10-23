@@ -56,7 +56,7 @@ const ChatHeader = ({chat, blockee,blocker}: any) => {
         </div>
         </div>
         {!blockee&&(
-<div className='relative' onClick={toggleMenuPopup}>
+<button className='relative' onClick={toggleMenuPopup}>
 <Image src={menuIcon} alt='' className='w-6 toolti ' />
 <Tooltip
 className='sm:hidden'
@@ -73,7 +73,7 @@ className='sm:hidden'
 {blocking ? <Image src={loadingGif} alt="" className="w-4   cursor-pointer"/>:null }
 </button>
   </div>)}
-</div>
+</button>
 )}
                                      </div>
       );
