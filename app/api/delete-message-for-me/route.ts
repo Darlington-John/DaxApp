@@ -7,7 +7,6 @@ export async function DELETE(req: NextRequest) {
       await connectMongo();
   
       const { userId, receiverNumber, messageId } = await req.json();
-  console.log('reciecer:', receiverNumber)
       const sender:any = await User.findOne({ phone: userId });
       if (!sender) {
         return NextResponse.json({ error: 'Sender not found' }, { status: 404 });
@@ -48,7 +47,7 @@ export async function DELETE(req: NextRequest) {
   
       return NextResponse.json({ message: 'Message deleted successfully' });
     } catch (error) {
-      console.error(error);
+     
       return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
     }
   }

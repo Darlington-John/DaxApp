@@ -82,7 +82,6 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ message: 'Message sent successfully', url: uploadResult.secure_url });
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

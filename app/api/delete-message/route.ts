@@ -41,7 +41,6 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ message: 'Message deleted for both users' });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

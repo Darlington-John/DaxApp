@@ -15,9 +15,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    // Assuming JWT_SECRET is defined somewhere
+    
     if (!JWT_SECRET) {
-      console.error('JWT_SECRET is not defined');
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
@@ -32,7 +31,6 @@ await cleanupOldStatuses();
 
     return NextResponse.json({ statuses });
   } catch (error) {
-    console.error('Error fetching statuses:', error);
     return NextResponse.json({ error: 'Failed to fetch statuses' }, { status: 500 });
   }
 }

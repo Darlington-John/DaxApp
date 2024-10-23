@@ -91,7 +91,6 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ message: 'Message sent successfully', url: audioUrl});
   } catch (error) {
-    console.error('Error:', error);
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

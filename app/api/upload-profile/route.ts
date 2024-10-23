@@ -56,7 +56,6 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ url: uploadResult.secure_url });
   } catch (error) {
-    console.error('Upload error:', error);
     return NextResponse.json({ error: 'File upload failed' }, { status: 500 });
   }
 }

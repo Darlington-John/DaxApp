@@ -62,7 +62,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Users added to each other\'s contacts successfully.' }, { status: 200 });
 
   } catch (error) {
-    console.error('Error adding contact:', error);
     return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
   }
 }

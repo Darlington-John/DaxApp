@@ -53,7 +53,6 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ message: 'Messages marked as read' });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

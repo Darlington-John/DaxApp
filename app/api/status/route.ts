@@ -38,7 +38,6 @@ return NextResponse.json(
   { message: 'Status created successfully', status: newStatus }
 );
   } catch (error) {
-    console.error('Error creating status:', error);
     return NextResponse.json({ error: 'An error occurred while creating status' }, { status: 500 });
   }
 }

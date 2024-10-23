@@ -17,7 +17,6 @@ export async function GET(req: NextRequest) {
 
     
     if (!JWT_SECRET) {
-      console.error('JWT_SECRET is not defined');
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
@@ -48,7 +47,6 @@ const user = await User.findById(decoded.userId)
 
     return NextResponse.json({ user });
   } catch (error) {
-    console.error('Error fetching user:', error); 
     return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

@@ -43,7 +43,6 @@ export async function PATCH(req: NextRequest) {
   
       return NextResponse.json({ message: 'Contact blocked successfully' }, { status: 200 });
     } catch (error) {
-      console.error('Error blocking contact:', error);
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
   }

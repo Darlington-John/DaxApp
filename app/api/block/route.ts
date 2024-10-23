@@ -47,7 +47,6 @@ export async function PATCH(req: NextRequest) {
   
       return NextResponse.json({ message: `Contact ${action} successfully` }, { status: 200 });
     } catch (error) {
-      console.error('Error toggling block/unblock:', error);
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
   }
