@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
     await connectMongo(); 
 
     const { email, verificationCode } = await req.json(); 
-    console.log('code:', verificationCode);
-    console.log('email:', email)
     const user = await User.findOne({ email });
 
     if (!user) {
