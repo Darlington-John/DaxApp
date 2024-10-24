@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
 
     await transporter.sendMail({
       ...mailOptions,
+      to: email,
       subject: `Verify your DaxApp email ${username}`,
       html: `
  <table style="background-color: #1C3A4D; font-family: Arial, sans-serif; border-radius: 10px; max-width: 370px; margin: 10px auto; padding: 30px;">
