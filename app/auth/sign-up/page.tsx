@@ -5,8 +5,6 @@ import Link from 'next/link';
 import loading from '~/public/images/doubleWhite.gif'
 import { useState, ChangeEvent, FormEvent, useEffect
 } from 'react';
-import doodle from './../../../public/images/doodle.jpg'
-import me from './../../../public/images/me.png'
 import { useRouter } from 'next/navigation';
 interface FormData {
 username: string;
@@ -50,9 +48,12 @@ setSubmitting(true);
       });
 
       if (res.ok) {
-        window.location.href = '/dashboard'; 
-       const data = await res.json();
-       localStorage.setItem('token', data.token);
+        const data = await res.json();
+        localStorage.setItem('email', data.email);
+        window.location.href = '/auth/verify-email';
+        // window.location.href = '/dashboard'; 
+      
+      //  localStorage.setItem('token', data.token);
        
 setSubmitting(false);
       } else {
@@ -79,17 +80,8 @@ setSubmitting(false);
     }
   }, [router]);
   return (
-    <div   className='relative flex items-center justify-center h-screen w-full  px-2'>
-            <Link href="/" className="flex  items-center text-3xl font-[800] md:text-2xl  2xs:shrink-0  absolute top-3 left-4 z-40 bg-darkBlue p-2 rounded-md gap-1">
 
-    <Image src={me} alt="" className="w-5 xs:w-4 xs:w-3"/>
-<h1 className="font-bold  font-[family-name:var(--font-mulish-bold)] text-blue text-2xl  xs:text-xl">
-    DaxApp
-</h1>
-</Link>
-            <Image    src={doodle}
-fill
-priority={true} alt='' className='object-cover'/>
+
 <div className='relative  z-40  bg-darkBlue  px-4 py-10 flex flex-col  w-[500px] rounded-2xl border border-2 border-[#394E60]  gap-3 shadow-lg  xs:gap-6'>
 <div>
       <h1 className='text-3xl font-bold text-center text-blue leading-none'>Welcome  to DaxApp</h1>
@@ -170,6 +162,5 @@ className="w-5  h-5"
     </form>
 </div>
 
-    </div>
   );
 }

@@ -65,6 +65,7 @@ interface IUser extends Document {
   profile: string;
   phone: string;
   contacts: IContacts[];
+  verificationHash: string;
   createdAt?: Date; 
   updatedAt?: Date;
 }
@@ -75,7 +76,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phone: { type: String, required: true },
-  contacts: { type: [contactsSchema], default: [] }
+  contacts: { type: [contactsSchema], default: [] },
+  verificationHash: { type: String, required: true}
 }, { timestamps: true }); 
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
