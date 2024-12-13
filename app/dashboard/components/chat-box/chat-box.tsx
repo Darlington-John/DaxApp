@@ -93,7 +93,7 @@ const ChatBox = (props: any) => {
   const isScreenLarge = useScreenSize(640); 
 
   return (
-    <div className={`flex     items-center px-2 text-sm text-dimWhite relative   pt-2.5  pb-[6px] gap-1  max-w-[60%]  flex-wrap h-auto   parent border-none  outline-none w-auto lg:max-w-[80%]  sm:max-w-[90%]  ${medium}    ${props.sender.phone === user.phone ? 'self-end bg-[#004b64] rounded-l-md rounded-b-md' : 'self-start bg-[#202C33] rounded-b-md rounded-r-md'}`} ref={popupRef}  {...(!isScreenLarge &&{onClick: toggleMorePopup})}>
+    <div className={`flex     items-center px-2 text-sm text-dimWhite relative   pt-2.5  pb-[6px] gap-1  max-w-[60%]  flex-wrap h-auto   parent border-none  outline-none w-auto lg:max-w-[80%]  sm:max-w-[90%] ${(props.image|| props.video || props.audio ) && 'min-h-[33px]  min-w-[120px]'}  ${medium}    ${props.sender.phone === user.phone ? 'self-end bg-[#004b64] rounded-l-md rounded-b-md' : 'self-start bg-[#202C33] rounded-b-md rounded-r-md'}`} ref={popupRef}  {...(!isScreenLarge &&{onClick: toggleMorePopup})}>
 {isScreenLarge &&(<button className='   absolute right-1 top-1 bg-transparent  backdrop-blur-md p-1  rounded child ' onClick={toggleMorePopup}>
         <Image src={down} alt="" className="w-3.5" />
       </button>) }

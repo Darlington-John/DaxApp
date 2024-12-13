@@ -73,11 +73,11 @@ const {loading, user}= useUser();
     
         const data = await res.json();
         if (!res.ok) {
-          alert('Failed to delete message: ' + data.error);
+          console.error('Error deleting message:');
         } 
       } catch (error) {
         console.error('Error deleting message:', error);
-        alert('Error deleting message.');
+
       } finally {
         setLoadingState(false);
       }

@@ -93,7 +93,7 @@ const LoginPage = () => {
 onChange={(e) =>{setPassword(e.target.value); setError('')}}
   placeholder="Password"
         required
-          className={`text-sm font-semibold  outline-none px-2 py-3 rounded-md rounded-md  w-full text-sm font-semibold  outline-none px-2 py-3 rounded-md rounded-md  w-full  bg-deepBlue  focus:ring-2  ring-blue  ${error ==='Incorrect password' ? 'text-red ': ' text-white'}`}
+          className={`text-sm font-semibold  outline-none px-2 py-3 rounded-md rounded-md  w-full text-sm font-semibold   px-2 py-3 rounded-md rounded-md  w-full  bg-deepBlue  focus:ring-2  ring-blue  ${error ==='Incorrect password' ? 'text-red ': ' text-white'}`}
           type={isPasswordVisible ? 'text' : 'password'}
       />
       <button   onClick={handleTogglePasswordVisibility}  type="button">

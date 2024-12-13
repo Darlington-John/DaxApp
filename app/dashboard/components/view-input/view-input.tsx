@@ -73,7 +73,6 @@ setAudio('');
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert(`An error occured: ${data}`);
         }
       } catch (error) {
         console.error('Error sending message:', error);
@@ -137,7 +136,7 @@ setImage('');
       setMediaUrl(data.url);
       toggleUploadPopup();
     } else {
-      alert(`An error occured`);
+      (`An error occured`);
       setUploading(false);
     }
   } catch (error) {
@@ -169,7 +168,6 @@ setUploadingRec(true);
       stopRecording();
       setRecordVisible(false)
     } else {
-      alert(`An error occured: ${data}`);
       setUploadingRec(false);
     }
   } catch (error) {

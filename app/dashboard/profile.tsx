@@ -68,11 +68,10 @@ const handleUpload = async () => {
       setImageUrl(data.url);
       toggleEditImagePopup();
     } else {
-      alert(`Upload failed: ${data.error}`);
+      setUploading(false);
     }
   } catch (error) {
     console.error('Upload error:', error);
-    alert('An error occurred while uploading the file.');
   } finally {
     setUploading(false);
   }

@@ -58,12 +58,11 @@ setSubmitting(true);
 setSubmitting(false);
       } else {
         const error = await res.json();
-        alert(error.error);
         setSubmitting(false);
       }
     } catch (error) {
       console.error('Error during sign up:', error);
-      alert('An unexpected error occurred. Please try again later.');
+
     }
   };
 

@@ -94,7 +94,6 @@ setTimeout(()=>{toggleStatusPopup();
   setSendingStatus(false);}, 5000)
           } else {
             setSendingStatus(false)
-            alert(`An error occured: ${data}`);
           }
         } catch (error) {
           console.error('Error sending message:', error);

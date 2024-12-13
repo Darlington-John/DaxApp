@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main  className='relative flex items-center justify-center h-screen w-full  px-2 ' >
+    <main  className='relative flex items-center justify-center h-screen w-full  px-2 bg-darkBlue  ' >
      <Link href="/" className="flex  items-center text-3xl font-[800] md:text-2xl  2xs:shrink-0  absolute top-3 left-4 z-40 bg-darkBlue p-2 rounded-md gap-1">
 
 <Image src={me} alt="" className="w-5 xs:w-4 xs:w-3"/>
